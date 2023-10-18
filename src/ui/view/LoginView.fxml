@@ -5,11 +5,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" 
-  prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.login.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.LoginController">
   <children>
         <Label fx:id="loginLabel" alignment="CENTER" layoutX="176.0" layoutY="79.0" prefHeight="18.0" prefWidth="50.0" text="Login" />
         <Label fx:id="passwordLabel" alignment="CENTER" layoutX="184.0" layoutY="178.0" text="Password" />
@@ -20,6 +18,7 @@
         <PasswordField fx:id="passwordField" layoutX="184.0" layoutY="200.0" prefHeight="35.0" prefWidth="270.0" />
         <TextField fx:id="passwordTextField" layoutX="184.0" layoutY="169.0" prefHeight="35.0" prefWidth="270.0" visible="false" />
         <Hyperlink fx:id="signUpLink" layoutX="182.0" layoutY="274.0" prefHeight="23.0" prefWidth="242.0" text="Are you not registered yet? Register now!" />
-        <Label fx:id="errorLabel" layoutX="187.0" layoutY="248.0" prefHeight="18.0" prefWidth="270.0" visible="false" />
+        <Label fx:id="loginErrorLabel" layoutX="184.0" layoutY="141.0" prefHeight="18.0" prefWidth="270.0" visible="false" />
+        <Label fx:id="passwordErrorLabel" layoutX="184.0" layoutY="247.0" prefHeight="18.0" prefWidth="270.0" visible="false" />
   </children>
 </Pane>

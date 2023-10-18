@@ -1,4 +1,4 @@
-package view.login;
+package ui.controller;
 
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -18,12 +18,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class LoginController {
+public class LoginController extends GenericController {
 
     private final int MAX_TEXT_LENGTH = 25;
 
     @FXML
-    private Label loginLabel, passwordLabel, errorLabel;
+    private Label loginLabel, passwordLabel, loginErrorLabel, passwordErrorLabel;
 
     @FXML
     private TextField loginTextField, passwordTextField;
@@ -36,9 +36,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-    private Stage stageLogin;
 
-    private final static Logger LOGGER = Logger.getLogger("package view.login");
 
     /**
      * init void
@@ -51,9 +49,9 @@ public class LoginController {
         LOGGER.info("Initializing login window.");
         Scene scene = new Scene(root);
 
-        stageLogin.setScene(scene);
-        stageLogin.setTitle("Login Window");
-        stageLogin.setResizable(false);
+        stage.setScene(scene);
+        stage.setTitle("Login Window");
+        stage.setResizable(false);
 
         loginLabel.setText("Login");
         passwordLabel.setText("Password");
@@ -61,7 +59,7 @@ public class LoginController {
         confirmButton.setText("Confirm");
         exitButton.setText("Exit");
 
-        // stageLogin.setOnShowing(this::); TODO: create handlers
+        // stage.setOnShowing(this::); TODO: create handlers
     }
 
     /**
@@ -137,15 +135,6 @@ public class LoginController {
 
         }
     }
-
-    /**
-     * prepare the stage for a change of scene
-     * 
-     * @param stage where the window shows
-     */
-    public void setStage(Stage stage) {
-        this.stageLogin = stage;
-    }
     /**
      * method that initiates the stage and sets/prepares the values
      * inside of it.
@@ -154,12 +143,12 @@ public class LoginController {
     public void initStage(Parent root) {
        LOGGER.info("Initialazing "  + " window."); 
        Scene scene = new Scene(root);
-       stageLogin.setScene(scene);
+       stage.setScene(scene);
         // Set properties
         // se establece el nombre de la ventana
-        stageLogin.setTitle("Ventana");
+        stage.setTitle("Ventana");
         // se establece la ventana como no redimensionable
-        stageLogin.setResizable(false);
+        stage.setResizable(false);
         // se establecen las celdas de las tablas
         
 
@@ -172,9 +161,7 @@ public class LoginController {
             if (KeyCode.ESCAPE == event.getCode()) 
                 closeRequest();
         }); */
-
-       
-        stageLogin.show();
+        stage.show();
         LOGGER.info("Window opened.");
     }
 }

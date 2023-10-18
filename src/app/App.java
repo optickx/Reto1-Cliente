@@ -8,7 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import view.login.LoginController;
+import ui.controller.LoginController;
 
 /**
  * @author dani
@@ -19,7 +19,7 @@ public class App extends Application {
     public void start(Stage stage) {
         try {
             FXMLLoader loader = 
-                new FXMLLoader(getClass().getClassLoader().getResource("view/login/LoginView.fxml"));
+                new FXMLLoader(getClass().getClassLoader().getResource("ui/view/LoginView.fxml"));
             Parent root = (Parent) loader.load();
             //Obtain the Sign In window controller
             LoginController controller = 
