@@ -50,6 +50,7 @@ public class LoginController extends GenericController {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+        //scene.getStylesheets().add(getClass().getResource("ui/view/stylesheet.css").toExternalForm());
         stage.setTitle("Login Window");
         stage.setResizable(false);
 
@@ -58,6 +59,13 @@ public class LoginController extends GenericController {
 
         confirmButton.setText("Confirm");
         exitButton.setText("Exit");
+
+        confirmButton.setDisable(true);
+        exitButton.setDisable(true);
+        showPasswordButton.setDisable(true);
+
+        loginErrorLabel.setVisible(false);
+        passwordErrorLabel.setVisible(false);
 
         // stage.setOnShowing(this::); TODO: create handlers
     }
@@ -72,9 +80,9 @@ public class LoginController extends GenericController {
         // focus is placed directly in the login field
         passwordTextField.setText("");
 
-        confirmButton.setDisable(true);
-        exitButton.setDisable(true);
-        showPasswordButton.setDisable(true);
+
+
+        
     }
 
 
