@@ -20,7 +20,6 @@ import javafx.stage.WindowEvent;
 
 public class LoginController {
 
-
     private final int MAX_TEXT_LENGTH = 25;
 
     @FXML
@@ -80,12 +79,14 @@ public class LoginController {
         showPasswordButton.setDisable(true);
     }
 
+
+
     /**
      * whenever text changes. *
      * 
-     * @param observable The value being observed.
-     * @param oldValue   The old value of the observable.
-     * @param newValue   The new value of the observable.
+     * @param observable value being observed.
+     * @param oldValue old value of the observable.
+     * @param newValue new value of the observable.
      */
     protected void textChanged(ObservableValue observable,
             String oldValue,
@@ -116,7 +117,7 @@ public class LoginController {
      * @return
      */
     private boolean passwordIsValid(String password) {
-
+        return true;
     }
 
     /**
@@ -144,5 +145,36 @@ public class LoginController {
      */
     public void setStage(Stage stage) {
         this.stageLogin = stage;
+    }
+    /**
+     * method that initiates the stage and sets/prepares the values
+     * inside of it.
+     * @param root
+     */
+    public void initStage(Parent root) {
+       LOGGER.info("Initialazing "  + " window."); 
+       Scene scene = new Scene(root);
+       stageLogin.setScene(scene);
+        // Set properties
+        // se establece el nombre de la ventana
+        stageLogin.setTitle("Ventana");
+        // se establece la ventana como no redimensionable
+        stageLogin.setResizable(false);
+        // se establecen las celdas de las tablas
+        
+
+        // alineamos los elementos
+        
+        
+
+        // por si acaso se pide hacer algo con teclas
+        /* stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> { // Adds an event handler that records every time the escape key is pressed
+            if (KeyCode.ESCAPE == event.getCode()) 
+                closeRequest();
+        }); */
+
+       
+        stageLogin.show();
+        LOGGER.info("Window opened.");
     }
 }

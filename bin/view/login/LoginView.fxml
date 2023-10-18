@@ -8,7 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" 
+  prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.login.LoginController">
   <children>
         <Label fx:id="loginLabel" alignment="CENTER" layoutX="176.0" layoutY="79.0" prefHeight="18.0" prefWidth="50.0" text="Login" />
         <Label fx:id="passwordLabel" alignment="CENTER" layoutX="184.0" layoutY="178.0" text="Password" />
