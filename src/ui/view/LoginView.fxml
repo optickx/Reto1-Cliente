@@ -1,77 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?xml-stylesheet href="simple-page.css" type="text/css"?>
+<?xml-stylesheet href="style.css" type="text/css"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-   prefHeight="378.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/21"
-   xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.LoginController">   
    <children>
-      <ImageView fitHeight="413.0" fitWidth="618.0" layoutX="-9.0" layoutY="-33.0"
-         pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="448.0" fitWidth="636.0" layoutX="-17.0" layoutY="-25.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/img/night-sky-background.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="loginLabel" alignment="CENTER" layoutX="272.0" layoutY="38.0" prefHeight="21.0"
-         prefWidth="57.0" text="Login" textFill="WHITE">
+      <Label fx:id="loginLabel" alignment="CENTER" layoutX="272.0" layoutY="38.0" prefHeight="21.0" prefWidth="57.0" text="Login" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="passwordLabel" alignment="CENTER" layoutX="259.0" layoutY="159.0"
-         text="Password" textFill="WHITE">
+      <Label fx:id="passwordLabel" alignment="CENTER" layoutX="259.0" layoutY="159.0" text="Password" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="19.0" />
          </font>
       </Label>
-      <TextField fx:id="loginTextField" alignment="CENTER" layoutX="188.0" layoutY="72.0"
-         prefHeight="35.0" prefWidth="226.0" promptText="username@example.com">
+      <TextField fx:id="loginTextField" alignment="CENTER" layoutX="188.0" layoutY="72.0" prefHeight="35.0" prefWidth="226.0" promptText="username@example.com">
          <font>
             <Font name="Cambria Math" size="12.0" />
          </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <Blend />
+         </effect>
       </TextField>
-      <TextField fx:id="passwordTextField" layoutX="184.0" layoutY="169.0" prefHeight="35.0"
-         prefWidth="270.0" visible="false" />
-      <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="180.0" layoutY="189.0"
-         prefHeight="35.0" prefWidth="242.0" promptText="your password" />
-      <Button fx:id="confirmButton" layoutX="381.0" layoutY="283.0" mnemonicParsing="false"
-         prefHeight="35.0" prefWidth="66.0" text="Confirm" />
-      <Button fx:id="exitButton" layoutX="184.0" layoutY="283.0" mnemonicParsing="false"
-         prefHeight="35.0" prefWidth="66.0" text="Exit" />
-      <Button fx:id="showPasswordButton" layoutX="454.0" layoutY="193.0" mnemonicParsing="false"
-         prefHeight="26.0" prefWidth="25.0" textFill="TRANSPARENT" />
-      <Hyperlink fx:id="signUpLink" alignment="CENTER" contentDisplay="CENTER" layoutX="180.0"
-         layoutY="339.0" prefHeight="23.0" prefWidth="242.0"
-         text="Are you not registered yet? Register now!">
+      <TextField fx:id="passwordTextField" layoutX="184.0" layoutY="169.0" prefHeight="35.0" prefWidth="270.0" visible="false" />
+      <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="180.0" layoutY="189.0" prefHeight="35.0" prefWidth="242.0" promptText="your password" />
+      <Button fx:id="confirmButton" layoutX="381.0" layoutY="283.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="66.0" text="Confirm" />
+      <Button fx:id="exitButton" layoutX="184.0" layoutY="283.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="66.0" text="Exit" />
+      <Button fx:id="showPasswordButton" layoutX="454.0" layoutY="193.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="25.0" textFill="TRANSPARENT" />
+      <Hyperlink fx:id="signUpLink" alignment="CENTER" contentDisplay="CENTER" layoutX="180.0" layoutY="339.0" prefHeight="23.0" prefWidth="242.0" text="Are you not registered yet? Register now!">
          <font>
             <Font name="Cambria Math" size="11.0" />
          </font>
       </Hyperlink>
-      <Label fx:id="loginErrorLabel" alignment="CENTER" layoutX="150.0" layoutY="238.0"
-         prefHeight="18.0" prefWidth="308.0"
-         text="Password must be between 8 and 25 characters long" textFill="#ff5e5e">
+      <Label fx:id="passwordErrorLabel" alignment="CENTER" layoutX="150.0" layoutY="238.0" prefHeight="18.0" prefWidth="308.0" text="Password must be between 8 and 25 characters long" textFill="#ff5e5e">
          <font>
             <Font name="Cambria Math" size="13.0" />
          </font>
       </Label>
-      <Label fx:id="passwordErrorLabel" layoutX="184.0" layoutY="247.0" prefHeight="18.0"
-         prefWidth="270.0" visible="false" />
-      <Label fx:id="loginErrorLabel" alignment="CENTER" layoutX="169.0" layoutY="123.0"
-         prefHeight="18.0" prefWidth="270.0" text="Username must be an email" textFill="#ff5e5e">
+      <Label fx:id="loginErrorLabel" alignment="CENTER" layoutX="169.0" layoutY="123.0" prefHeight="18.0" prefWidth="270.0" text="Username must be an email" textFill="#ff5e5e">
          <font>
             <Font name="Cambria Math" size="13.0" />
          </font>
       </Label>
-      <ImageView fitHeight="18.0" fitWidth="25.0" layoutX="458.0" layoutY="198.0"
-         pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="18.0" fitWidth="25.0" layoutX="458.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/img/eye-not-see.png" />
          </image>

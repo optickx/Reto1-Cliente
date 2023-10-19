@@ -1,6 +1,5 @@
 package ui.controller;
 
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class LoginController extends GenericController {
@@ -24,20 +22,53 @@ public class LoginController extends GenericController {
 
     @FXML
     private Label loginLabel, passwordLabel, loginErrorLabel, passwordErrorLabel;
-
     @FXML
     private TextField loginTextField, passwordTextField;
-
     @FXML
     private Button confirmButton, exitButton, showPasswordButton;
-
     // TODO: HyperLink to SignUp window???
-
     @FXML
     private PasswordField passwordField;
+     /**
+     * method that initiates the stage and sets/prepares the values
+     * inside of it.
+     * @param root
+     */
+    public void initStage(Parent root) {
+       LOGGER.info("Initialazing "  + " window."); 
+       Scene scene = new Scene(root);
+       stage.setScene(scene);
+        // Set properties
+        // se establece el nombre de la ventana
+        stage.setTitle("Ventana");
+        // se establece la ventana como no redimensionable
+        stage.setResizable(false);
+        // se establecen las celdas de las tablas
+
+         confirmButton.setDisable(true);
+        exitButton.setDisable(true);
+        showPasswordButton.setDisable(true);
+
+        
+        loginErrorLabel.setVisible(false);
+        passwordErrorLabel.setVisible(false);
+
+        loginTextField.textProperty().addListener(this::textPropertyChange);
+        passwordTextField.textProperty().addListener(this::textPropertyChange);
 
 
+        // alineamos los elementos
+        
+        
 
+        // por si acaso se pide hacer algo con teclas
+        /* stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> { // Adds an event handler that records every time the escape key is pressed
+            if (KeyCode.ESCAPE == event.getCode()) 
+                closeRequest();
+        }); */
+        stage.show();
+        LOGGER.info("Window opened.");
+    }
     /**
      * init void
      * creates and initializes the window, also setting the
@@ -45,13 +76,16 @@ public class LoginController extends GenericController {
      * 
      * @param root
      */
-    public void initLogin(Parent root) {
+    private void initLogin(Parent root) {
         LOGGER.info("Initializing login window.");
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+        scene.getStylesheets().add(getClass().getResource("ui.view.style.css").toExternalForm());
+
         //scene.getStylesheets().add(getClass().getResource("ui/view/stylesheet.css").toExternalForm());
         stage.setTitle("Login Window");
+        stage.setMaximized(false);
         stage.setResizable(false);
 
         loginLabel.setText("Login");
@@ -60,16 +94,8 @@ public class LoginController extends GenericController {
         confirmButton.setText("Confirm");
         exitButton.setText("Exit");
 
-        confirmButton.setDisable(true);
-        exitButton.setDisable(true);
-        showPasswordButton.setDisable(true);
-
-        loginErrorLabel.setVisible(false);
-        passwordErrorLabel.setVisible(false);
-
         // stage.setOnShowing(this::); TODO: create handlers
     }
-
     /**
      * @param event void that runs when the window is shown
      */
@@ -79,14 +105,9 @@ public class LoginController extends GenericController {
         loginTextField.requestFocus();
         // focus is placed directly in the login field
         passwordTextField.setText("");
-
-
-
         
+        System.out.println("well well well");
     }
-
-
-
     /**
      * whenever text changes. *
      * 
@@ -94,17 +115,16 @@ public class LoginController extends GenericController {
      * @param oldValue old value of the observable.
      * @param newValue new value of the observable.
      */
-    protected void textChanged(ObservableValue observable,
+    protected void textPropertyChange(ObservableValue observable,
             String oldValue,
             String newValue) {
-
         // if the text is valid by format
-        boolean textIsValid = loginTextField.getText().length() <= MAX_TEXT_LENGTH &&
-                passwordField.getText().length() <= MAX_TEXT_LENGTH &&
-                usernameIsValid(loginTextField.getText());
+        boolean textIsValid = 
+            8 <= loginTextField.getText().length() && loginTextField.getText().length() <= MAX_TEXT_LENGTH &&
+            8 <= passwordTextField.getText().length() && passwordField.getText().length() <= MAX_TEXT_LENGTH &&
+            usernameIsValid(loginTextField.getText());
 
         confirmButton.setDisable(!textIsValid);
-
     }
     /**
      * @param username text input by user in username field
@@ -142,34 +162,5 @@ public class LoginController extends GenericController {
         } catch (Exception e) {
 
         }
-    }
-    /**
-     * method that initiates the stage and sets/prepares the values
-     * inside of it.
-     * @param root
-     */
-    public void initStage(Parent root) {
-       LOGGER.info("Initialazing "  + " window."); 
-       Scene scene = new Scene(root);
-       stage.setScene(scene);
-        // Set properties
-        // se establece el nombre de la ventana
-        stage.setTitle("Ventana");
-        // se establece la ventana como no redimensionable
-        stage.setResizable(false);
-        // se establecen las celdas de las tablas
-        
-
-        // alineamos los elementos
-        
-        
-
-        // por si acaso se pide hacer algo con teclas
-        /* stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> { // Adds an event handler that records every time the escape key is pressed
-            if (KeyCode.ESCAPE == event.getCode()) 
-                closeRequest();
-        }); */
-        stage.show();
-        LOGGER.info("Window opened.");
     }
 }

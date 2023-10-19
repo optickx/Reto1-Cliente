@@ -52,8 +52,5 @@ public abstract class GenericController {
         // alert.getDialogPane().getStylesheets().add(getClass().getResource("/javafxapplicationud3example/ui/view/customCascadeStyleSheet.css").toExternalForm());
         alert.showAndWait();
         
-    }
-
-
-    
+    }    
 }
