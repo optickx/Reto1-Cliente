@@ -2,12 +2,14 @@ package ui.controller;
 
 import java.util.logging.Logger;
 
+import interfaces.Signable;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import logic.Signable;
 import javafx.scene.control.ButtonType;
 
 public abstract class GenericController {
+
+    protected final int MAX_TEXT_LENGTH = 255;
 
     protected static final Logger LOGGER = 
         Logger.getLogger("package view.controller\":");

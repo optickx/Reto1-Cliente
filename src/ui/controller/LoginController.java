@@ -1,5 +1,6 @@
 package ui.controller;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,15 +11,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.WindowEvent;
 
 public class LoginController extends GenericController {
-
-    private final int MAX_TEXT_LENGTH = 25;
 
     @FXML
     private Label loginLabel, passwordLabel, loginErrorLabel, passwordErrorLabel;
@@ -29,6 +32,8 @@ public class LoginController extends GenericController {
     // TODO: HyperLink to SignUp window???
     @FXML
     private PasswordField passwordField;
+    // window name
+    private static final String WINDOW_NAME = "Login Window";
      /**
      * method that initiates the stage and sets/prepares the values
      * inside of it.
@@ -43,9 +48,18 @@ public class LoginController extends GenericController {
         stage.setTitle("Ventana");
         // se establece la ventana como no redimensionable
         stage.setResizable(false);
-        // se establecen las celdas de las tablas
 
-         confirmButton.setDisable(true);
+        stage.setTitle("Login Window");
+        stage.setMaximized(false);
+        stage.setResizable(false);
+
+        loginLabel.setText("Login");
+        passwordLabel.setText("Password");
+
+        confirmButton.setText("Confirm");
+        exitButton.setText("Exit");
+
+        confirmButton.setDisable(true);
         exitButton.setDisable(true);
         showPasswordButton.setDisable(true);
 
@@ -61,40 +75,31 @@ public class LoginController extends GenericController {
         
         
 
-        // por si acaso se pide hacer algo con teclas
-        /* stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> { // Adds an event handler that records every time the escape key is pressed
+        // cerrar ventana con Esc
+        stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> { // Adds an event handler that records every time the escape key is pressed
             if (KeyCode.ESCAPE == event.getCode()) 
                 closeRequest();
-        }); */
+        });
         stage.show();
         LOGGER.info("Window opened.");
     }
-    /**
-     * init void
-     * creates and initializes the window, also setting the
-     * name and defining it's elements.
-     * 
-     * @param root
+    /**     
+     * button that does the very same thing as the 
+     * close button on top of any window
      */
-    private void initLogin(Parent root) {
-        LOGGER.info("Initializing login window.");
-        Scene scene = new Scene(root);
-
-        stage.setScene(scene);
-        scene.getStylesheets().add(getClass().getResource("ui.view.style.css").toExternalForm());
-
-        //scene.getStylesheets().add(getClass().getResource("ui/view/stylesheet.css").toExternalForm());
-        stage.setTitle("Login Window");
-        stage.setMaximized(false);
-        stage.setResizable(false);
-
-        loginLabel.setText("Login");
-        passwordLabel.setText("Password");
-
-        confirmButton.setText("Confirm");
-        exitButton.setText("Exit");
-
-        // stage.setOnShowing(this::); TODO: create handlers
+    public void handleExitButtonAction() {
+        closeRequest();
+    }
+    /**
+     * action that will be executed when the 
+     * user tries to close the application.
+     */
+    public void closeRequest() {
+        Optional<ButtonType> action = 
+            new Alert(Alert.AlertType.CONFIRMATION, 
+            "Are you sure you want to exit the application?").showAndWait();
+        if (action.get() == ButtonType.OK) 
+            stage.close();
     }
     /**
      * @param event void that runs when the window is shown

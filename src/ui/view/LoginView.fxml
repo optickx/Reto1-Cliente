@@ -43,10 +43,17 @@
          </effect>
       </TextField>
       <TextField fx:id="passwordTextField" layoutX="184.0" layoutY="169.0" prefHeight="35.0" prefWidth="270.0" visible="false" />
-      <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="180.0" layoutY="189.0" prefHeight="35.0" prefWidth="242.0" promptText="your password" />
+      <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="180.0" layoutY="189.0" prefHeight="35.0" prefWidth="242.0" />
       <Button fx:id="confirmButton" layoutX="381.0" layoutY="283.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="66.0" text="Confirm" />
       <Button fx:id="exitButton" layoutX="184.0" layoutY="283.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="66.0" text="Exit" />
-      <Button fx:id="showPasswordButton" layoutX="454.0" layoutY="193.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="25.0" textFill="TRANSPARENT" />
+      <Button fx:id="showPasswordButton" layoutX="430.0" layoutY="194.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="25.0" textFill="TRANSPARENT">
+         <graphic>
+            <ImageView fitHeight="18.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/img/eye-not-see.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <Hyperlink fx:id="signUpLink" alignment="CENTER" contentDisplay="CENTER" layoutX="180.0" layoutY="339.0" prefHeight="23.0" prefWidth="242.0" text="Are you not registered yet? Register now!">
          <font>
             <Font name="Cambria Math" size="11.0" />
@@ -62,10 +69,5 @@
             <Font name="Cambria Math" size="13.0" />
          </font>
       </Label>
-      <ImageView fitHeight="18.0" fitWidth="25.0" layoutX="458.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../resources/img/eye-not-see.png" />
-         </image>
-      </ImageView>
    </children>
 </Pane>
