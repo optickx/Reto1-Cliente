@@ -33,7 +33,7 @@ public class LoginController extends GenericController {
     @FXML
     private PasswordField passwordField;
     // window name
-    private static final String WINDOW_NAME = "Login Window";
+    private static final String WINDOW_NAME = "Login";
      /**
      * method that initiates the stage and sets/prepares the values
      * inside of it.
