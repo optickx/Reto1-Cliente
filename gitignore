@@ -33,4 +33,5 @@ nbproject/**
 lib/nblibraries.properties
 /dist/
 /build/
-/bin/
+/bin/**
+/lib/**
