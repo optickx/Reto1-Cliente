@@ -34,4 +34,4 @@ lib/nblibraries.properties
 /dist/
 /build/
 /bin/**
-/lib/**
+/lib/
