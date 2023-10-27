@@ -6,15 +6,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="615.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.RegistrationControlller">
   <children>
-      <Pane prefHeight="632.0" prefWidth="441.0">
+      <Pane prefHeight="618.0" prefWidth="411.0">
          <children>
-            <ImageView fitHeight="454.0" fitWidth="620.0" layoutX="-106.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+            <ImageView fitHeight="413.0" fitWidth="660.0" layoutX="-106.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
                   <Image url="@../../resources/img/night-sky-background.jpg" />
                </image>
@@ -37,11 +37,11 @@
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></Label>
-            <PasswordField id="passwordTextField" fx:id="passwordField" alignment="CENTER" layoutX="112.0" layoutY="185.0" prefHeight="25.0" prefWidth="193.0" promptText="Password">
+            <PasswordField id="passwordTextField" fx:id="passwordTextField" alignment="CENTER" layoutX="112.0" layoutY="185.0" prefHeight="25.0" prefWidth="193.0" promptText="Password">
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></PasswordField>
-            <PasswordField id="passwordTextField" fx:id="confirmPasswordField" alignment="CENTER" layoutX="110.0" layoutY="222.0" prefHeight="25.0" prefWidth="193.0" promptText="Confirm Password">
+            <PasswordField id="passwordTextField" fx:id="confirmPasswordTextField" alignment="CENTER" layoutX="110.0" layoutY="222.0" prefHeight="25.0" prefWidth="193.0" promptText="Confirm Password">
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></PasswordField>
@@ -69,7 +69,7 @@
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></TextField>
-            <Button id="showPasswordButton1" fx:id="showPasswordButton1" layoutX="321.0" layoutY="222.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
+            <Button id="showPasswordButton1" fx:id="showConfirmPasswordButton" layoutX="321.0" layoutY="222.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
                <font>
                   <Font name="Cambria Math" size="12.0" />
                </font>
@@ -100,22 +100,22 @@
                <font>
                   <Font name="Cambria Math" size="12.0" />
                </font></Button>
-            <Label id="usernameErrorLabel" fx:id="loginErrorLabel" alignment="CENTER" layoutX="74.0" layoutY="127.0" prefHeight="18.0" prefWidth="270.0" text="Username must be an email" textFill="#ff5e5e">
+            <Label id="usernameErrorLabel" fx:id="emailErrorLabel" alignment="CENTER" layoutX="74.0" layoutY="127.0" prefHeight="18.0" prefWidth="270.0" text="Username must be an email" textFill="#ff5e5e">
                <font>
                   <Font name="Cambria Math" size="13.0" />
                </font>
             </Label>
-            <Label id="passwordErrorLabel" fx:id="loginErrorLabel1" alignment="CENTER" layoutX="73.0" layoutY="247.0" prefHeight="18.0" prefWidth="270.0" text="Passwords must be the same" textFill="#ff5e5e">
+            <Label id="passwordErrorLabel" fx:id="confirmPasswordErrorLabel" alignment="CENTER" layoutX="73.0" layoutY="247.0" prefHeight="18.0" prefWidth="270.0" text="Passwords must be the same" textFill="#ff5e5e">
                <font>
                   <Font name="Cambria Math" size="13.0" />
                </font>
             </Label>
-            <Label id="passwordErrorLabel" fx:id="loginErrorLabel11" alignment="CENTER" layoutX="77.0" layoutY="525.0" prefHeight="18.0" prefWidth="270.0" text="ZIP must be numerical" textFill="#ff5e5e">
+            <Label id="passwordErrorLabel" fx:id="zipErrorLabel" alignment="CENTER" layoutX="77.0" layoutY="525.0" prefHeight="18.0" prefWidth="270.0" text="ZIP must be numerical" textFill="#ff5e5e">
                <font>
                   <Font name="Cambria Math" size="13.0" />
                </font>
             </Label>
-            <Label id="passwordErrorLabel" fx:id="loginErrorLabel12" alignment="CENTER" layoutX="75.0" layoutY="373.0" prefHeight="18.0" prefWidth="270.0" text="The personal information cannot be empty" textFill="#ff5e5e">
+            <Label id="passwordErrorLabel" fx:id="personalInfoErrorLabel" alignment="CENTER" layoutX="75.0" layoutY="373.0" prefHeight="18.0" prefWidth="270.0" text="The personal information cannot be empty" textFill="#ff5e5e">
                <font>
                   <Font name="Cambria Math" size="13.0" />
                </font>
@@ -123,4 +123,4 @@
          </children>
       </Pane>
   </children>
-</VBox>
+</AnchorPane>
