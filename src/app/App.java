@@ -15,6 +15,10 @@ import ui.controller.LoginController;
  */
 public class App extends Application {
 
+    
+    /** 
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
         try {

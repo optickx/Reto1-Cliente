@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.ws.Response;
 
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,6 +19,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.WindowEvent;
+import packets.User;
+import packets.Request;
+import packets.RequestType;
 
 public class LoginController extends GenericController {
 
@@ -59,9 +61,9 @@ public class LoginController extends GenericController {
         confirmButton.setText("Confirm");
         exitButton.setText("Exit");
 
-        confirmButton.setDisable(true);
-        exitButton.setDisable(true);
-        showPasswordButton.setDisable(true);
+        confirmButton.setDisable(false);
+        exitButton.setDisable(false);
+        showPasswordButton.setDisable(false);
 
         
         loginErrorLabel.setVisible(false);
@@ -69,6 +71,7 @@ public class LoginController extends GenericController {
 
         loginTextField.textProperty().addListener(this::textPropertyChange);
         passwordTextField.textProperty().addListener(this::textPropertyChange);
+        confirmButton.setOnAction(this::handleConfirmButtonAction);
 
 
         // alineamos los elementos
@@ -124,12 +127,13 @@ public class LoginController extends GenericController {
             String oldValue,
             String newValue) {
         // if the text is valid by format
-        boolean textIsValid = 
+       /*  boolean textIsValid = 
             8 <= loginTextField.getText().length() && loginTextField.getText().length() <= MAX_TEXT_LENGTH &&
             8 <= passwordTextField.getText().length() && passwordField.getText().length() <= MAX_TEXT_LENGTH &&
             usernameIsValid(loginTextField.getText());
 
         confirmButton.setDisable(!textIsValid);
+        */
     }
     /**
      * @param username text input by user in username field
@@ -160,12 +164,13 @@ public class LoginController extends GenericController {
     @FXML
     private void handleConfirmButtonAction(ActionEvent event) {
         try {
-            Response response = null;
+            User user = new User(loginTextField.getText(), passwordField.getText());
+            signable.signIn(user);
             LOGGER.info("Confirm button has been pressed.");
 
             // validate the values set in loginTextField and passwordTextField
         } catch (Exception e) {
-
+            LOGGER.info("Error");
         }
     }
 }
