@@ -11,6 +11,7 @@ import javax.xml.ws.Response;
 import exceptions.EmptyFieldException;
 import exceptions.IncorrectFormatException;
 import exceptions.PasswordTooShortException;
+import exceptions.PasswordsDoNotMatchException;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -148,7 +149,7 @@ public class RegistrationController extends GenericController {
     emailErrorLabel.setText("Username must be an email");
     confirmPasswordErrorLabel.setText("Passwords must be the same");
     zipErrorLabel.setText("ZIP must be numerical");
-    phoneErrorLabel.setText("The personal information cannot be empty");
+    personalInfoErrorLabel.setText("The personal information cannot be empty");
 
     // Disable the SignUp and show passwords buttons so that we can control that
     // they are only enabled when the fields are filled in
@@ -161,22 +162,28 @@ public class RegistrationController extends GenericController {
     emailErrorLabel.setVisible(false);
     confirmPasswordErrorLabel.setVisible(false);
     zipErrorLabel.setVisible(false);
-    phoneErrorLabel.setVisible(false);
+    personalInfoErrorLabel.setVisible(false);
 
     // We set listeners in the emailTextField, passwordTextField and
     // confirmPasswordTextField text/password fields to detect changes to the text
     // entered by the user
     emailTextField.onActionProperty();
-    passwordTextField.textProperty().addListener(this::handlePasswordField);
-    confirmPasswordTextField.textProperty().addListener(this::textPropertyChange);
-    // ¡¡¡FALTA POR AÑADIR LISTENERS PARA EL RESTO DE TEXFIELDS AQUÍ!!!
+    passwordTextField.textProperty().addListener(this::handlePassword);
+    confirmPasswordTextField.textProperty().addListener(this::handleUsername);
+    fullNameTextField.textProperty().addListener(this::handleFullName);
+    phoneTextField.textProperty().addListener(this::handlePhoneNumber);
+    cityTextField.textProperty().addListener(this::handleCityAddress);
+    addressTextField.textProperty().addListener(this::handleCityAddress);
+    zipTextField.textProperty().addListener(this::handleZip);
+    signUpButton.setOnAction(null);
 
     /**
-     * This method registers an event handler to detect when the Escape key is
-     * released, and in that case, call the closeRequest() function
-     * 
-     * @param KeyEvent
-     * @author Alex Irusta
+     * Adds a key release event handler for the "ESCAPE" key, closes the request if
+     * pressed,
+     * and then displays the stage. Logs a message indicating the window has been
+     * opened.
+     *
+     * @param stage The JavaFX stage to be displayed.
      */
     stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
       if (KeyCode.ESCAPE == event.getCode())
@@ -186,7 +193,62 @@ public class RegistrationController extends GenericController {
     LOGGER.info("Window Opened.");
   }
 
-  private void handlePasswordField(ObservableValue observable,
+  /**
+   * Handles changes to the username field, validates the input, and throws
+   * exceptions when necessary.
+   *
+   * @param observable The observable value associated with the username field.
+   * @param oldValue   The previous value of the username.
+   * @param newValue   The new value of the username to be validated.
+   * @throws IncorrectFormatException If the username format is incorrect, this
+   *                                  exception is thrown.
+   * @throws EmptyFieldException      If the username is empty, this exception is
+   *                                  thrown.
+   */
+  protected void handleUsername(ObservableValue observable,
+      String oldValue, String newValue) {
+    try {
+      isNotEmpty(newValue);
+      isTooLong(newValue);
+
+      if (!validateUsername(newValue)) {
+        throw new IncorrectFormatException();
+      }
+    } catch (EmptyFieldException e) {
+      emailErrorLabel.setText("Username cannot be empty");
+    } catch (IncorrectFormatException e) {
+      emailErrorLabel.setText("Username must be a valid email");
+    } finally {
+      emailErrorLabel.setVisible(true);
+    }
+  }
+
+  /**
+   * Validates a username for correct email format.
+   *
+   * @param username The username to be validated as an email address.
+   * @return true if the username is a valid email address, false otherwise.
+   * @throws IncorrectFormatException If the username does not match the expected
+   *                                  email format, this exception is thrown.
+   */
+  private boolean validateUsername(String username) throws IncorrectFormatException {
+    Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+        Pattern.CASE_INSENSITIVE);
+
+    Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(username);
+    if (matcher.matches())
+      return true;
+    throw new IncorrectFormatException();
+  }
+
+  /**
+   * Handles changes to the password field and validates the input.
+   *
+   * @param observable The observable value associated with the password field.
+   * @param oldValue   The previous value of the password.
+   * @param newValue   The new value of the password to be validated.
+   */
+  private void handlePassword(ObservableValue observable,
       String oldValue,
       String newValue) {
     try {
@@ -202,13 +264,73 @@ public class RegistrationController extends GenericController {
     }
   }
 
+  /**
+ * Handles the validation of password matching when the password field is updated.
+ *
+ * @param observable The observable property that triggered the change.
+ * @param oldValue The previous value of the password field.
+ * @param newValue The new value of the password field.
+ */
+  private void handlePasswordMatching(ObservableValue observable, String oldValue, String newValue) {
+    try {
+      validatePasswordMatching(newValue);
+    } catch (PasswordsDoNotMatchException e) {
+      confirmPasswordErrorLabel.setText("Passwords do not match");
+    } finally {
+      confirmPasswordErrorLabel.setVisible(true);
+    }
+  }
+
+  /**
+   * Validates a password for correct format, length, and emptiness.
+   *
+   * @param password The password to be validated.
+   * @throws IncorrectFormatException  If the password format is incorrect, this
+   *                                   exception is thrown.
+   * @throws PasswordTooShortException If the password is too short, this
+   *                                   exception is thrown.
+   * @throws EmptyFieldException       If the password is empty, this exception is
+   *                                   thrown.
+   */
+  private void validatePassword(String password)
+      throws IncorrectFormatException, PasswordTooShortException, EmptyFieldException {
+    isNotEmpty(password);
+    isTooShort(password);
+    isTooLong(password);
+  }
+
+  /**
+   * Validates whether the provided password matches the confirmation password.
+   *
+   * @param password The password to be validated.
+   * @return true if the password matches the confirmation password, false
+   *         otherwise.
+   * @throws PasswordsDoNotMatchException If the password and confirmation
+   *                                      password do not match.
+   */
+  private boolean validatePasswordMatching(String password) throws PasswordsDoNotMatchException {
+    if (passwordTextField.getText().equals(confirmPasswordTextField.getText()))
+      return true;
+
+    throw new PasswordsDoNotMatchException();
+
+  }
+
+  /**
+   * Handles changes to the full name field, validates the input, and updates
+   * error messages accordingly.
+   *
+   * @param observable The observable value associated with the full name field.
+   * @param oldValue   The previous value of the full name.
+   * @param newValue   The new value of the full name to be validated.
+   */
   private void handleFullName(ObservableValue observable,
       String oldValue,
       String newValue) {
     try {
       isTooLong(newValue);
       isNotEmpty(newValue);
-      fullNameIsValid(newValue);
+      validateFullName(newValue);
 
       personalInfoErrorLabel.setVisible(false);
     } catch (EmptyFieldException e) {
@@ -220,7 +342,15 @@ public class RegistrationController extends GenericController {
     }
   }
 
-  public static boolean fullNameIsValid(String input) throws IncorrectFormatException {
+  /**
+   * Validates a full name for correct format.
+   *
+   * @param input The full name to be validated.
+   * @return true if the full name is valid, false otherwise.
+   * @throws IncorrectFormatException If the full name does not match the expected
+   *                                  format, this exception is thrown.
+   */
+  public static boolean validateFullName(String input) throws IncorrectFormatException {
     String regex = "^[\\p{L}]+(\\s+[\\p{L}]+){1,}$";
 
     Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);
@@ -232,6 +362,14 @@ public class RegistrationController extends GenericController {
     throw new IncorrectFormatException();
   }
 
+  /**
+   * Handles changes to the phone number field and validates the input.
+   *
+   * @param observable The observable value associated with the phone number
+   *                   field.
+   * @param oldValue   The previous value of the phone number.
+   * @param newValue   The new value of the phone number to be validated.
+   */
   private void handlePhoneNumber(ObservableValue observable,
       String oldValue,
       String newValue) {
@@ -249,6 +387,14 @@ public class RegistrationController extends GenericController {
     }
   }
 
+  /**
+   * Validates a phone number for correct format.
+   *
+   * @param numero The phone number to be validated.
+   * @return true if the phone number is valid, false otherwise.
+   * @throws IncorrectFormatException If the phone number does not match the
+   *                                  expected format, this exception is thrown.
+   */
   public static boolean validatePhoneNumber(String numero) throws IncorrectFormatException {
     String patron = "^\\+\\d{2}\\d{9}$";
 
@@ -262,16 +408,49 @@ public class RegistrationController extends GenericController {
     throw new IncorrectFormatException();
   }
 
-  private void validateCity(String city) throws EmptyFieldException, IncorrectFormatException {
-    isNotEmpty(city);
-    isTooLong(city);
+  /**
+   * Handles changes in the city/address field and validates the input.
+   *
+   * @param observable An ObservableValue representing the change.
+   * @param oldValue   The old value of the city/address.
+   * @param newValue   The new value of the city/address.
+   */
+  private void handleCityAddress(ObservableValue observable, String oldValue, String newValue) {
+    try {
+      isNotEmpty(newValue);
+      validateCityAddress(newValue);
+
+      personalInfoErrorLabel.setVisible(false);
+    } catch (EmptyFieldException e) {
+      personalInfoErrorLabel.setText("There are errors in personal info");
+    } catch (IncorrectFormatException e) {
+      personalInfoErrorLabel.setText("There are errors in personal info");
+    } finally {
+      personalInfoErrorLabel.setVisible(true);
+    }
   }
 
-  private void validateAddress(String address) throws EmptyFieldException, IncorrectFormatException {
-    isNotEmpty(address);
-    isTooLong(address);
+  /**
+   * Validates a city address for correctness.
+   *
+   * @param value The city address to be validated.
+   * @throws EmptyFieldException      If the city address is empty, this exception
+   *                                  is thrown.
+   * @throws IncorrectFormatException If the city address is too long, this
+   *                                  exception is thrown.
+   */
+  private void validateCityAddress(String value) throws EmptyFieldException, IncorrectFormatException {
+    isNotEmpty(value);
+    isTooLong(value);
   }
 
+  /**
+   * Handles the ZIP code field when its value changes.
+   *
+   * @param observable The observable value associated with the ZIP code field.
+   * @param oldValue   The previous value of the ZIP code.
+   * @param newValue   The new value of the ZIP code.
+   */
   private void handleZip(ObservableValue observable,
       String oldValue,
       String newValue) {
@@ -287,6 +466,14 @@ public class RegistrationController extends GenericController {
     }
   }
 
+  /**
+   * Validates a ZIP code for correct format.
+   *
+   * @param zip The ZIP code to be validated.
+   * @return true if the ZIP code is valid, false otherwise.
+   * @throws IncorrectFormatException If the ZIP code does not match the expected
+   *                                  format, this exception is thrown.
+   */
   public static boolean validateZip(String zip) throws IncorrectFormatException {
     String regex = "\\d{1,5}";
     Pattern pattern = Pattern.compile(regex);
@@ -297,86 +484,13 @@ public class RegistrationController extends GenericController {
     throw new IncorrectFormatException();
   }
 
-  private void validatePassword(String password)
-      throws IncorrectFormatException, PasswordTooShortException, EmptyFieldException {
-    isNotEmpty(password);
-    isTooShort(password);
-    isTooLong(password);
-  }
-
-  private void isTooShort(String password) throws PasswordTooShortException {
-    if (password.length() < 8) {
-      throw new PasswordTooShortException();
-    }
-  }
-
-  private void isNotEmpty(String password) throws EmptyFieldException {
-    if (password.isEmpty())
-      throw new EmptyFieldException();
-  }
-
-  private void isTooLong(String input) throws IncorrectFormatException {
-    if (input.length() > 255)
-      throw new IncorrectFormatException();
-  }
-
   /**
-   * This method is responsible for registering changes to TextFields and
-   * PasswordFields and performing format/length checking where necessary. If
-   * everything is OK, it enables the signUpButton
-   * 
-   * @param observable
-   * @auhor Alex Irusta
-   */
-  protected void textPropertyChange(ObservableValue observable,
-      String oldValue,
-      String newValue) {
-    boolean textIsValid = 8 <= emailTextField.getText().length()
-        && emailTextField.getText().length() <= MAX_TEXT_LENGTH &&
-        8 <= passwordTextField.getText().length() && passwordTextField.getText().length() <= MAX_TEXT_LENGTH
-        && passwordTextField.getText() == confirmPasswordTextField.getText() &&
-        usernameIsValid(emailTextField.getText());
-
-    signUpButton.setDisable(!textIsValid);
-  }
-
-  /**
-   * We display a confirmation dialogue box asking the user if they are sure they
-   * want to exit the application
-   * 
-   * @auhor Alex Irusta
-   */
-  public void closeRequest() {
-    Optional<ButtonType> action = new Alert(Alert.AlertType.CONFIRMATION,
-        "Are you sure you want to exit the application?").showAndWait();
-    if (action.get() == ButtonType.OK)
-      stage.close();
-  }
-
-  /**
-   * Method for checking correct email formatting
-   * 
-   * @param username
-   * @auhor Alex Irusta
-   */
-  private boolean usernameIsValid(String username) throws IncorrectFormatException{
-    Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
-        Pattern.CASE_INSENSITIVE);
-
-    Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(username);
-    if (matcher.matches()) 
-      return true;
-    throw new IncorrectFormatException;
-  }
-
-  /**
-   * ¡¡¡FALTA POR AVERIGUAR QUÉ HACE ESTE CÓDIGO Y SI ESTÁ INCOMPLETO!!!
-   * 
-   * @param event
-   * @auhor Alex Irusta
+   * Handles the action of the "Sign Up" button when pressed.
+   *
+   * @param event The action event that triggers the function.
    */
   @FXML
-  private void handleConfirmButtonAction(ActionEvent event) {
+  private void handleSignUpButtonAction(ActionEvent event) {
     try {
       Response response = null;
       LOGGER.info("Sign Up button has been pressed.");
@@ -384,6 +498,54 @@ public class RegistrationController extends GenericController {
     } catch (Exception e) {
 
     }
+  }
+
+  /**
+   * Checks if the provided field is not empty.
+   *
+   * @param field The field to be checked for emptiness.
+   * @throws EmptyFieldException If the field is empty, this exception is thrown.
+   */
+  private void isNotEmpty(String password) throws EmptyFieldException {
+    if (password.isEmpty())
+      throw new EmptyFieldException();
+  }
+
+  /**
+   * Checks if the provided password is too short.
+   *
+   * @param password The password to be checked for its length.
+   * @throws PasswordTooShortException If the password is too short (less than 8
+   *                                   characters), this exception is thrown.
+   */
+  private void isTooShort(String password) throws PasswordTooShortException {
+    if (password.length() < 8) {
+      throw new PasswordTooShortException();
+    }
+  }
+
+  /**
+   * Checks if the input string is too long.
+   *
+   * @param input The input string to be checked for length.
+   * @throws IncorrectFormatException If the input string is too long, this
+   *                                  exception is thrown.
+   */
+  private void isTooLong(String input) throws IncorrectFormatException {
+    if (input.length() > 255)
+      throw new IncorrectFormatException();
+  }
+
+  /**
+   * We display a confirmation dialogue box asking the user if they are sure they
+   * want to exit the application
+   * 
+   */
+  public void closeRequest() {
+    Optional<ButtonType> action = new Alert(Alert.AlertType.CONFIRMATION,
+        "Are you sure you want to exit the application?").showAndWait();
+    if (action.get() == ButtonType.OK)
+      stage.close();
   }
 
 }
