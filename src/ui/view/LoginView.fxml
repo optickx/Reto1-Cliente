@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.LoginController">   
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.LoginController">   
    <children>
-      <ImageView fitHeight="448.0" fitWidth="636.0" layoutX="-17.0" layoutY="-25.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="412.0" fitWidth="600.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/img/night-sky-background.jpg" />
          </image>
@@ -42,8 +42,8 @@
             <Blend />
          </effect>
       </TextField>
-      <TextField fx:id="passwordTextField" layoutX="184.0" layoutY="169.0" prefHeight="35.0" prefWidth="270.0" visible="false" />
-      <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="180.0" layoutY="189.0" prefHeight="35.0" prefWidth="242.0" />
+      <TextField fx:id="passwordTextField" alignment="CENTER" layoutX="178.0" layoutY="188.0" prefHeight="35.0" prefWidth="242.0" visible="false" />
+      <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="180.0" layoutY="190.0" prefHeight="35.0" prefWidth="242.0" />
       <Button fx:id="confirmButton" layoutX="381.0" layoutY="283.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="66.0" text="Confirm" />
       <Button fx:id="exitButton" layoutX="184.0" layoutY="283.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="66.0" text="Exit" />
       <Button fx:id="showPasswordButton" layoutX="430.0" layoutY="194.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="25.0" textFill="TRANSPARENT">

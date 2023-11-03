@@ -1,5 +1,6 @@
 package logic.business;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
@@ -13,8 +14,6 @@ import exceptions.ServerErrorException;
 import exceptions.UserAlreadyExistsException;
 import interfaces.Signable;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import packets.Request;
 import packets.Response;
@@ -28,11 +27,6 @@ import static packets.RequestType.*;
  */
 public class Client implements Signable {
     /**
-     * Package logger
-     */
-    private static Logger LOGGER = Logger.getLogger("logic.business");
-
-    /**
      * The port where the server is listening at
      */
     private static final int PORT = Integer.parseInt(ResourceBundle.getBundle("resources.config").getString("PORT"));
@@ -45,7 +39,7 @@ public class Client implements Signable {
     /**
      * Object with which we will communicate with the server
      */
-    private static Socket socket = new Socket();
+    private static Socket socket;
 
     /**
      * Packet sent to the server by the client
@@ -71,6 +65,7 @@ public class Client implements Signable {
     public User signIn(User user)
             throws BadCredentialsException, NoSuchUserException, ServerCapacityException, ServerErrorException {
         try {
+            socket = new Socket();
             socket.connect(new InetSocketAddress(HOSTNAME, PORT), 1000);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
@@ -83,17 +78,19 @@ public class Client implements Signable {
             response = (Response) in.readObject();
 
             return unpackResponse(response);
-        } catch (SocketTimeoutException e){
+        } catch (SocketTimeoutException e) {
             throw (ServerErrorException) new Exception("Server timed out");
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
-        }   
-        return user;
+        } catch (IOException | ClassNotFoundException e) {
+            throw (ServerErrorException) new Exception("Error writing to the server");
+        } catch (UserAlreadyExistsException e) {
+            throw (ServerErrorException) new Exception("OOPS");
+        }
     }
 
     @Override
     public void signUp(User user) throws ServerCapacityException, ServerErrorException, UserAlreadyExistsException {
         try {
+            socket = new Socket();
             socket.connect(new InetSocketAddress(HOSTNAME, PORT), 1000);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
@@ -106,16 +103,18 @@ public class Client implements Signable {
             response = (Response) in.readObject();
 
             unpackResponse(response);
-        } catch (SocketTimeoutException e){
+        } catch (SocketTimeoutException e) {
             throw (ServerErrorException) new Exception("Server timed out");
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
+        } catch (IOException | ClassNotFoundException e) {
+            throw (ServerErrorException) new Exception("Error writing to the server");
+        } catch (NoSuchUserException | BadCredentialsException e) {
+            throw (ServerErrorException) new Exception("OOPS");
         }
-
     }
 
     private User unpackResponse(Response res)
-            throws ServerErrorException, ServerCapacityException, NoSuchUserException, BadCredentialsException, UserAlreadyExistsException {
+            throws ServerErrorException, ServerCapacityException, NoSuchUserException, BadCredentialsException,
+            UserAlreadyExistsException {
         switch (res.getResponse()) {
             case BAD_CREDENTIAL_ERROR:
                 throw new BadCredentialsException();
