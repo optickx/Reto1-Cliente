@@ -28,7 +28,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.WindowEvent;
 import logic.business.SignableFactory;
 import packets.User;
 
