@@ -149,7 +149,7 @@ public class RegistrationController extends GenericController {
 
         // Disable the SignUp and show passwords buttons so that we can control that
         // they are only enabled when the fields are filled in
-        signUpButton.setDisable(true);
+        signUpButton.setDisable(false);
 
         // We make the error labels not visible to control that they are only visible
         // when the field in question loses focus and is erroneous

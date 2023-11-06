@@ -79,11 +79,18 @@ public class Client implements Signable {
 
             return unpackResponse(response);
         } catch (SocketTimeoutException e) {
-            throw (ServerErrorException) new Exception("Server timed out");
+            Exception ex = new Exception("Server timed out");
+            ex = new ServerErrorException();
+            throw (ServerErrorException) ex;
         } catch (IOException | ClassNotFoundException e) {
-            throw (ServerErrorException) new Exception("Error writing to the server");
+            Exception ex = new Exception("Error connecting to the server");
+            ex = new ServerErrorException();
+            throw (ServerErrorException) ex;
         } catch (UserAlreadyExistsException e) {
-            throw (ServerErrorException) new Exception("OOPS");
+            // this catch clause should never be entered, thus the message
+            Exception ex = new Exception("OOPS");
+            ex = new ServerErrorException();
+            throw (ServerErrorException) ex;
         }
     }
 
@@ -104,11 +111,12 @@ public class Client implements Signable {
 
             unpackResponse(response);
         } catch (SocketTimeoutException e) {
-            throw (ServerErrorException) new Exception("Server timed out");
+            throw ((ServerErrorException) new Exception("Server timed out"));
         } catch (IOException | ClassNotFoundException e) {
-            throw (ServerErrorException) new Exception("Error writing to the server");
+            throw ((ServerErrorException) new Exception("Error writing to the server"));
         } catch (NoSuchUserException | BadCredentialsException e) {
-            throw (ServerErrorException) new Exception("OOPS");
+            // this catch clause should never be entered, thus the message
+            throw ((ServerErrorException) new Exception("OOPS"));
         }
     }
 

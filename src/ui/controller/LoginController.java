@@ -44,7 +44,6 @@ public class LoginController extends GenericController {
     @FXML
     private Hyperlink signUpLink;
 
-
     /**
      * method that initiates the stage and sets/prepares the values
      * inside of it.
@@ -225,21 +224,37 @@ public class LoginController extends GenericController {
         try {
             User user = new User(loginTextField.getText(), passwordField.getText());
             user = signable.signIn(user);
-            LOGGER.info("Confirm button has been pressed.");
-            
+
+            FXMLLoader loader = 
+                new FXMLLoader(getClass().getClassLoader().getResource("ui/view/RegisteredView.fxml"));
+            Parent root = (Parent) loader.load();
+            //Obtain the Sign In window controller
+            RegisteredController controller = 
+                RegisteredController.class
+                    .cast(loader.getController());
+            controller.setStage(stage);
+            controller.setLoggedUser(user);
+            controller.initStage(root);
+
             // validate the values set in loginTextField and passwordTextField
         } catch (BadCredentialsException e) {
-            LOGGER.info("cONTRA");
-            System.out.println("Contrasena incorrecta");
+            passwordErrorLabel.setText("Incorrect password");
+            passwordErrorLabel.setVisible(true);
         } catch (NoSuchUserException e) {
-            LOGGER.info("User");
-            System.out.println("Usuario no existe");
+            loginErrorLabel.setText("Username does not exist");
+            loginErrorLabel.setVisible(true);
         } catch (ServerCapacityException e) {
-            LOGGER.info("Server");
-            System.out.println("Mucho server ");
+            new Alert(Alert.AlertType.ERROR,
+                    "Server is at full capacity at the moment, try again in a few seconds")
+                    .showAndWait();
         } catch (ServerErrorException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    e.getMessage()).showAndWait();
             LOGGER.info("Error");
-            System.out.println("Error");
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    "Error loading main window").showAndWait();
+            LOGGER.info("Unable to load new window");
         }
 
     }
