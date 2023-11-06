@@ -1,7 +1,12 @@
 package ui.controller;
 
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import exceptions.EmptyFieldException;
+import exceptions.IncorrectFormatException;
+import exceptions.PasswordTooShortException;
 import interfaces.Signable;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -58,5 +63,73 @@ public abstract class GenericController {
         // alert.getDialogPane().getStylesheets().add(getClass().getResource("/javafxapplicationud3example/ui/view/customCascadeStyleSheet.css").toExternalForm());
         alert.showAndWait();
 
+    }
+
+    /**
+     * Checks if the provided field is not empty.
+     *
+     * @param field The field to be checked for emptiness.
+     * @throws EmptyFieldException If the field is empty, this exception is
+     *                             thrown.
+     */
+    protected boolean isNotEmpty(String password) throws EmptyFieldException {
+        if (password.isEmpty()) {
+            throw new EmptyFieldException();
+        }
+        return true;
+    }
+
+    /**
+     * Checks if the input string is too long.
+     *
+     * @param input The input string to be checked for length.
+     * @throws IncorrectFormatException If the input string is too long, this
+     *                                  exception is thrown.
+     */
+    protected boolean isTooLong(String input) throws IncorrectFormatException {
+        if (input.length() > 255) {
+            throw new IncorrectFormatException();
+        }
+        return false;
+    }
+    /**
+     * Checks if the provided password is too short.
+     *
+     * @param password The password to be checked for its length.
+     * @throws PasswordTooShortException If the password is too short (less than
+     *                                   8 characters), this exception is thrown.
+     */
+    protected boolean isTooShort(String password) throws PasswordTooShortException {
+        if (password.length() < 8) {
+            throw new PasswordTooShortException();
+        } 
+        return false;
+    }
+    protected boolean validateUsername(String username) throws IncorrectFormatException {
+        Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+                Pattern.CASE_INSENSITIVE);
+
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(username);
+        if (matcher.matches()) {
+            return true;
+        }
+        throw new IncorrectFormatException();
+    }
+    /**
+     * Validates a password for correct format, length, and emptiness.
+     *
+     * @param password The password to be validated.
+     * @throws IncorrectFormatException  If the password format is incorrect,
+     *                                   this exception is thrown.
+     * @throws PasswordTooShortException If the password is too short, this
+     *                                   exception is thrown.
+     * @throws EmptyFieldException       If the password is empty, this exception is
+     *                                   thrown.
+     */
+    protected void validatePassword(String password)
+            throws IncorrectFormatException, PasswordTooShortException, EmptyFieldException {
+        isNotEmpty(password);
+        isTooShort(password);
+        isTooLong(password);
     }
 }

@@ -1,25 +1,35 @@
 package ui.controller;
 
+import java.io.IOException;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.xml.ws.Response;
-
+import app.App;
+import exceptions.BadCredentialsException;
+import exceptions.EmptyFieldException;
+import exceptions.IncorrectFormatException;
+import exceptions.NoSuchUserException;
+import exceptions.PasswordTooShortException;
+import exceptions.ServerCapacityException;
+import exceptions.ServerErrorException;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.WindowEvent;
+import logic.business.SignableFactory;
+import packets.User;
 
 public class LoginController extends GenericController {
 
@@ -29,11 +39,11 @@ public class LoginController extends GenericController {
     private TextField loginTextField, passwordTextField;
     @FXML
     private Button confirmButton, exitButton, showPasswordButton;
-    // TODO: HyperLink to SignUp window???
     @FXML
     private PasswordField passwordField;
-    // window name
-    private static final String WINDOW_NAME = "Login";
+    @FXML
+    private Hyperlink signUpLink;
+
 
     /**
      * method that initiates the stage and sets/prepares the values
@@ -45,6 +55,7 @@ public class LoginController extends GenericController {
         LOGGER.info("Initialazing " + " window.");
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        signable = SignableFactory.getImplementation();
         // Set properties
         // se establece el nombre de la ventana
         stage.setTitle("Ventana");
@@ -61,15 +72,21 @@ public class LoginController extends GenericController {
         confirmButton.setText("Confirm");
         exitButton.setText("Exit");
 
-        confirmButton.setDisable(true);
-        exitButton.setDisable(true);
-        showPasswordButton.setDisable(true);
+        passwordTextField.setVisible(false);
+
+        confirmButton.setDisable(false);
+        exitButton.setDisable(false);
+        showPasswordButton.setDisable(false);
 
         loginErrorLabel.setVisible(false);
         passwordErrorLabel.setVisible(false);
 
-        loginTextField.textProperty().addListener(this::textPropertyChange);
-        passwordTextField.textProperty().addListener(this::textPropertyChange);
+        loginTextField.textProperty().addListener(this::handleUsername);
+        passwordField.textProperty().addListener(this::handlePassword);
+        showPasswordButton.setOnAction(this::handleShowPassword);
+        exitButton.setOnAction(this::handleExitButton);
+        confirmButton.setOnAction(this::handleConfirmButtonAction);
+        signUpLink.setOnAction(this::handleHyperlinkPressed);
 
         // alineamos los elementos
 
@@ -91,6 +108,63 @@ public class LoginController extends GenericController {
         closeRequest();
     }
 
+    protected void handleUsername(ObservableValue observable,
+            String oldValue, String newValue) {
+        try {
+            newValue = newValue.trim();
+            if (isNotEmpty(newValue) || !isTooLong(newValue)) {
+                validateUsername(newValue);
+                loginErrorLabel.setVisible(false);
+            }
+        } catch (EmptyFieldException e) {
+            loginErrorLabel.setText("Username cannot be empty");
+            loginErrorLabel.setVisible(true);
+        } catch (IncorrectFormatException e) {
+            loginErrorLabel.setText("Username must be a valid email");
+            loginErrorLabel.setVisible(true);
+        }
+    }
+
+    private void handlePassword(ObservableValue observable,
+            String oldValue,
+            String newValue) {
+        try {
+            validatePassword(newValue);
+            passwordErrorLabel.setVisible(false);
+        } catch (IncorrectFormatException e) {
+            passwordErrorLabel.setText("Password too long");
+            passwordErrorLabel.setVisible(true);
+        } catch (PasswordTooShortException e) {
+            passwordErrorLabel.setText("Password too short");
+            passwordErrorLabel.setVisible(true);
+        } catch (EmptyFieldException e) {
+            passwordErrorLabel.setText("Password cannot be empty");
+            passwordErrorLabel.setVisible(true);
+        }
+    }
+
+    private void handleExitButton(ActionEvent event) {
+        closeRequest();
+
+    }
+
+    private void handleShowPassword(ActionEvent event) {
+        if (passwordTextField.isVisible())
+            showPassword(true);
+        else
+            showPassword(false);
+    }
+
+    private void showPassword(boolean visible) {
+        if (visible)
+            passwordField.setText(passwordTextField.getText());
+        else
+            passwordTextField.setText(passwordField.getText());
+
+        passwordField.setVisible(visible);
+        passwordTextField.setVisible(!visible);
+    }
+
     /**
      * action that will be executed when the
      * user tries to close the application.
@@ -100,19 +174,6 @@ public class LoginController extends GenericController {
                 "Are you sure you want to exit the application?").showAndWait();
         if (action.get() == ButtonType.OK)
             stage.close();
-    }
-
-    /**
-     * @param event void that runs when the window is shown
-     */
-    private void handlerWindowShowing(WindowEvent event) {
-        LOGGER.info("Initializing ---------whatever");
-        loginTextField.setText("");
-        loginTextField.requestFocus();
-        // focus is placed directly in the login field
-        passwordTextField.setText("");
-
-        System.out.println("well well well");
     }
 
     /**
@@ -126,33 +187,30 @@ public class LoginController extends GenericController {
             String oldValue,
             String newValue) {
         // if the text is valid by format
-        boolean textIsValid = 8 <= loginTextField.getText().length()
-                && loginTextField.getText().length() <= MAX_TEXT_LENGTH &&
-                8 <= passwordTextField.getText().length() && passwordField.getText().length() <= MAX_TEXT_LENGTH &&
-                usernameIsValid(loginTextField.getText());
-
-        confirmButton.setDisable(!textIsValid);
+        /*
+         * boolean textIsValid =
+         * 8 <= loginTextField.getText().length() && loginTextField.getText().length()
+         * <= MAX_TEXT_LENGTH &&
+         * 8 <= passwordTextField.getText().length() && passwordField.getText().length()
+         * <= MAX_TEXT_LENGTH &&
+         * usernameIsValid(loginTextField.getText());
+         * 
+         * confirmButton.setDisable(!textIsValid);
+         */
     }
 
-    /**
-     * @param username text input by user in username field
-     * @return true if the username matches the email pattern. false if not.
-     */
-    private boolean usernameIsValid(String username) {
-        // TODO:
-        Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
-                Pattern.CASE_INSENSITIVE);
-
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(username);
-        return matcher.matches();
-    }
-
-    /**
-     * @param password
-     * @return
-     */
-    private boolean passwordIsValid(String password) {
-        return true;
+    private void handleHyperlinkPressed(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/view/Registration.fxml"));
+            Parent root = (Parent) loader.load();
+            // Obtain the Sign In window controller
+            RegistrationController controller = RegistrationController.class
+                    .cast(loader.getController());
+            controller.setStage(stage);
+            controller.initStage(root);
+        } catch (IOException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -163,13 +221,26 @@ public class LoginController extends GenericController {
      */
     @FXML
     private void handleConfirmButtonAction(ActionEvent event) {
+
         try {
-            Response response = null;
+            User user = new User(loginTextField.getText(), passwordField.getText());
+            user = signable.signIn(user);
             LOGGER.info("Confirm button has been pressed.");
-
+            
             // validate the values set in loginTextField and passwordTextField
-        } catch (Exception e) {
-
+        } catch (BadCredentialsException e) {
+            LOGGER.info("cONTRA");
+            System.out.println("Contrasena incorrecta");
+        } catch (NoSuchUserException e) {
+            LOGGER.info("User");
+            System.out.println("Usuario no existe");
+        } catch (ServerCapacityException e) {
+            LOGGER.info("Server");
+            System.out.println("Mucho server ");
+        } catch (ServerErrorException e) {
+            LOGGER.info("Error");
+            System.out.println("Error");
         }
+
     }
 }
