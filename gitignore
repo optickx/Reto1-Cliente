@@ -29,9 +29,12 @@ replay_pid*
 
 # Useless folders
 nbproject/**
-.vscode/**
+.vscode/
 lib/nblibraries.properties
 dist/
 build/
 bin/**
 lib/
+
+/build.xml
+manifest.mf

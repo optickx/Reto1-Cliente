@@ -49,6 +49,7 @@ public class LoginControllerTest extends ApplicationTest {
      */
     @Ignore
     @Test
+
     public void test1_ServerError(){
         clickOn(loginTextField);
         write("ejem@gmail.com");
@@ -100,8 +101,8 @@ public class LoginControllerTest extends ApplicationTest {
         clickOn(passwordField);
         write("whatTheHellBruh");
         clickOn(confirmButton);
-        verifyThat(passwordErrorLabel, isVisible());
-        
+        //verifyThat(passwordErrorLabel, isVisible());
+        assertTrue(passwordErrorLabel.getText().equalsIgnoreCase("Password too short"));
     }
     
     /**
@@ -114,13 +115,16 @@ public class LoginControllerTest extends ApplicationTest {
         clickOn(passwordField);
         write("abcd*1234");
         clickOn(confirmButton);
-        verifyThat(loginErrorLabel, isVisible());
-    
+        //verifyThat(loginErrorLabel, isVisible());
+        assertTrue(loginErrorLabel.getText().equalsIgnoreCase("Username must be a valid email"));
+
         clickOn(loginTextField);
         eraseText(60);
         write("Beetle Juice");
         clickOn(confirmButton);
-        verifyThat(loginErrorLabel, isVisible());
+        //verifyThat(loginErrorLabel, isVisible());
+        assertTrue(loginErrorLabel.getText().equalsIgnoreCase("Username must be a valid email"));
+
     }
 
 }   

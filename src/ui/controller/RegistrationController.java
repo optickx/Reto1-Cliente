@@ -1,5 +1,6 @@
 package ui.controller;
 
+import app.App;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,12 +9,22 @@ import exceptions.EmptyFieldException;
 import exceptions.IncorrectFormatException;
 import exceptions.PasswordTooShortException;
 import exceptions.PasswordsDoNotMatchException;
+import exceptions.ServerCapacityException;
+import exceptions.ServerErrorException;
+import exceptions.UserAlreadyExistsException;
+import interfaces.Signable;
+import logic.business.SignableFactory;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -21,6 +32,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import logic.business.SignableFactory;
+import packets.User;
 
 public class RegistrationController extends GenericController {
 
@@ -127,6 +141,8 @@ public class RegistrationController extends GenericController {
     @FXML
     private Button signUpButton;
 
+    private Signable sig;
+
     /**
      * The method initStage() initializes the stage and sets its containing
      * values
@@ -141,6 +157,8 @@ public class RegistrationController extends GenericController {
         // represented by the Stage object
         Scene scene = new Scene(root);
         stage.setScene(scene);
+
+        sig = SignableFactory.getImplementation();
 
         // We title the window and make it not resizable
         stage.setTitle("Registration Window");
@@ -165,6 +183,7 @@ public class RegistrationController extends GenericController {
         // confirmPasswordTextField text/password fields to detect changes to the text
         // entered by the user
         showPasswordButton.setOnAction(this::handleShowPassword);
+        goBackButton.setOnAction(this::handleGoBackButtonAction);
         emailTextField.textProperty().addListener(this::handleUsername);
         passwordField.textProperty().addListener(this::handlePassword);
         confirmPasswordField.textProperty().addListener(this::handlePasswordMatching);
@@ -173,7 +192,7 @@ public class RegistrationController extends GenericController {
         cityTextField.textProperty().addListener(this::handleCityAddress);
         addressTextField.textProperty().addListener(this::handleCityAddress);
         zipTextField.textProperty().addListener(this::handleZip);
-        signUpButton.setOnAction(null);
+        signUpButton.setOnAction(this::handleSignUpButtonAction);
 
         /**
          * Adds a key release event handler for the "ESCAPE" key, closes the
@@ -196,9 +215,9 @@ public class RegistrationController extends GenericController {
      * context of user registration or updates.
      *
      * @param observable An observable value, which may be associated with the
-     *                   username field.
-     * @param oldValue   The previous value of the username.
-     * @param newValue   The new value of the username to be validated.
+     * username field.
+     * @param oldValue The previous value of the username.
+     * @param newValue The new value of the username to be validated.
      */
     protected void handleUsername(ObservableValue observable,
             String oldValue, String newValue) {
@@ -218,34 +237,13 @@ public class RegistrationController extends GenericController {
     }
 
     /**
-     * private void handleGoBackButtonAction(ActionEvent event) {
-     * // Cerrar la ventana actual
-     * Stage currentStage = (Stage) goBackButton.getScene().getWindow();
-     * currentStage.close();
-     * 
-     * // Abrir la ventana de LoginController
-     * try {
-     * FXMLLoader loader = new
-     * FXMLLoader(getClass().getResource("LoginController.fxml"));
-     * Parent root = loader.load();
-     * Stage loginStage = new Stage();
-     * loginStage.setScene(new Scene(root));
-     * loginStage.show();
-     * } catch (IOException e) {
-     * e.printStackTrace();
-     * // Manejar errores al cargar la ventana de LoginController
-     * }
-     * }
-     **/
-
-    /**
      * This method is responsible for handling and validating a password input,
      * possibly during a user registration or update process.
      *
      * @param observable An observable value, which may be associated with the
-     *                   password field.
-     * @param oldValue   The previous value of the password.
-     * @param newValue   The new value of the password to be validated.
+     * password field.
+     * @param oldValue The previous value of the password.
+     * @param newValue The new value of the password to be validated.
      */
     private void handlePassword(ObservableValue observable,
             String oldValue,
@@ -270,10 +268,10 @@ public class RegistrationController extends GenericController {
      * passwords in a user's registration or update process.
      *
      * @param observable An observable value, which may be related to the
-     *                   password or confirm password fields.
-     * @param oldValue   The previous value of the password or confirm password.
-     * @param newValue   The new value of the password or confirm password to be
-     *                   validated.
+     * password or confirm password fields.
+     * @param oldValue The previous value of the password or confirm password.
+     * @param newValue The new value of the password or confirm password to be
+     * validated.
      */
     private void handlePasswordMatching(ObservableValue observable, String oldValue, String newValue) {
         try {
@@ -281,6 +279,9 @@ public class RegistrationController extends GenericController {
             confirmPasswordErrorLabel.setVisible(false);
         } catch (PasswordsDoNotMatchException e) {
             confirmPasswordErrorLabel.setText("Passwords do not match");
+            confirmPasswordErrorLabel.setVisible(true);
+        } catch (PasswordTooShortException ex) {
+            confirmPasswordErrorLabel.setText("Password too short");
             confirmPasswordErrorLabel.setVisible(true);
         }
     }
@@ -291,12 +292,12 @@ public class RegistrationController extends GenericController {
      *
      * @param password The password to be validated.
      * @return true if the password matches the confirmation password, false
-     *         otherwise.
+     * otherwise.
      * @throws PasswordsDoNotMatchException If the password and confirmation
-     *                                      password do not match.
+     * password do not match.
      */
-    private boolean validatePasswordMatching(String password) throws PasswordsDoNotMatchException {
-        if (passwordField.getText().equals(confirmPasswordField.getText())) {
+    private boolean validatePasswordMatching(String password) throws PasswordsDoNotMatchException, PasswordTooShortException {
+        if (!isTooShort(password) && passwordField.getText().equals(confirmPasswordField.getText())) {
             return true;
         }
 
@@ -309,9 +310,9 @@ public class RegistrationController extends GenericController {
      * in a user's personal information.
      *
      * @param observable An observable value, which may be associated with the
-     *                   full name field.
-     * @param oldValue   The previous value of the full name.
-     * @param newValue   The new value of the full name to be validated.
+     * full name field.
+     * @param oldValue The previous value of the full name.
+     * @param newValue The new value of the full name to be validated.
      */
     private void handleFullName(ObservableValue observable,
             String oldValue,
@@ -337,7 +338,7 @@ public class RegistrationController extends GenericController {
      * @param input The full name to be validated.
      * @return true if the full name is valid, false otherwise.
      * @throws IncorrectFormatException If the full name does not match the
-     *                                  expected format, this exception is thrown.
+     * expected format, this exception is thrown.
      */
     public static boolean validateFullName(String input) throws IncorrectFormatException {
         String regex = "^[\\p{L}]+(\\s+[\\p{L}]+){1,}$";
@@ -357,9 +358,9 @@ public class RegistrationController extends GenericController {
      * input in a user's personal information.
      *
      * @param observable An observable value, which may be associated with the
-     *                   phone number field.
-     * @param oldValue   The previous value of the phone number.
-     * @param newValue   The new value of the phone number to be validated.
+     * phone number field.
+     * @param oldValue The previous value of the phone number.
+     * @param newValue The new value of the phone number to be validated.
      */
     private void handlePhoneNumber(ObservableValue observable,
             String oldValue,
@@ -392,7 +393,7 @@ public class RegistrationController extends GenericController {
             confirmPasswordTextField.setText(confirmPasswordField.getText());
 
         } else {
-            passwordField.setText(passwordField.getText());
+            passwordField.setText(passwordTextField.getText());
             confirmPasswordField.setText(confirmPasswordTextField.getText());
         }
 
@@ -408,7 +409,7 @@ public class RegistrationController extends GenericController {
      * @param numero The phone number to be validated.
      * @return true if the phone number is valid, false otherwise.
      * @throws IncorrectFormatException If the phone number does not match the
-     *                                  expected format, this exception is thrown.
+     * expected format, this exception is thrown.
      */
     public static boolean validatePhoneNumber(String numero) throws IncorrectFormatException {
         String patron = "^\\+\\d{2}\\d{9}$";
@@ -432,9 +433,9 @@ public class RegistrationController extends GenericController {
      * input in a user's personal information.
      *
      * @param observable An observable value, possibly related to the city
-     *                   address field.
-     * @param oldValue   The previous value of the city address.
-     * @param newValue   The new value of the city address to be validated.
+     * address field.
+     * @param oldValue The previous value of the city address.
+     * @param newValue The new value of the city address to be validated.
      */
     private void handleCityAddress(ObservableValue observable, String oldValue, String newValue) {
         try {
@@ -455,10 +456,10 @@ public class RegistrationController extends GenericController {
      * Validates a city address for correctness.
      *
      * @param value The city address to be validated.
-     * @throws EmptyFieldException      If the city address is empty, this exception
-     *                                  is thrown.
+     * @throws EmptyFieldException If the city address is empty, this exception
+     * is thrown.
      * @throws IncorrectFormatException If the city address is too long, this
-     *                                  exception is thrown.
+     * exception is thrown.
      */
     private void validateCityAddress(String value) throws EmptyFieldException, IncorrectFormatException {
         isNotEmpty(value);
@@ -469,9 +470,9 @@ public class RegistrationController extends GenericController {
      * This method is responsible for handling and validating a ZIP code input.
      *
      * @param observable An observable value, possibly related to the input
-     *                   field.
-     * @param oldValue   The previous value of the ZIP code.
-     * @param newValue   The new value of the ZIP code to be validated.
+     * field.
+     * @param oldValue The previous value of the ZIP code.
+     * @param newValue The new value of the ZIP code to be validated.
      */
     private void handleZip(ObservableValue observable,
             String oldValue,
@@ -495,7 +496,7 @@ public class RegistrationController extends GenericController {
      * @param zip The ZIP code to be validated.
      * @return true if the ZIP code is valid, false otherwise.
      * @throws IncorrectFormatException If the ZIP code does not match the
-     *                                  expected format, this exception is thrown.
+     * expected format, this exception is thrown.
      */
     public static boolean validateZip(String zip) throws IncorrectFormatException {
         String regex = "\\d{5}";
@@ -509,12 +510,98 @@ public class RegistrationController extends GenericController {
     }
 
     /**
+     * Handles the action when the "Go Back" button is clicked. This method
+     * loads the "LoginView.fxml" view, initializes its controller, and sets up
+     * the stage for the Sign In window.
+     *
+     * @param event The event generated when the "Go Back" button is clicked.
+     */
+    private void handleGoBackButtonAction(ActionEvent event) {
+        try {
+            FXMLLoader loader
+                    = new FXMLLoader(getClass().getClassLoader().getResource("ui/view/LoginView.fxml"));
+            Parent root = (Parent) loader.load();
+            //Obtain the Sign In window controller
+            LoginController controller
+                    = LoginController.class
+                            .cast(loader.getController());
+            controller.setStage(stage);
+            controller.initStage(root);
+        } catch (IOException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
      * Handles the action of the "Sign Up" button when pressed.
      *
      * @param event The action event that triggers the function.
      */
-    @FXML
     private void handleSignUpButtonAction(ActionEvent event) {
+
+        String emailText = emailTextField.getText();
+        String passwordPass = passwordField.getText();
+        String confirmPasswordPass = confirmPasswordField.getText();
+        String passwordText = passwordTextField.getText();
+        String confirmPasswordText = confirmPasswordTextField.getText();
+        String nameText = fullNameTextField.getText();
+        String phoneText = phoneTextField.getText();
+        String cityText = cityTextField.getText();
+        String addressText = addressTextField.getText();
+        String zipText = zipTextField.getText();
+
+        if (emailText.isEmpty() || passwordPass.isEmpty() || confirmPasswordPass.isEmpty()
+                || passwordText.isEmpty() || confirmPasswordText.isEmpty() || nameText.isEmpty() || phoneText.isEmpty()
+                || cityText.isEmpty() || addressText.isEmpty() || zipText.isEmpty() || emailErrorLabel.isVisible()
+                || confirmPasswordErrorLabel.isVisible() || zipErrorLabel.isVisible() || personalInfoErrorLabel.isVisible()) {
+
+        } else {
+            try {
+
+                User user = new User();
+                user.setCity(cityText);
+                user.setEmail(emailText);
+                user.setFullName(nameText);
+                user.setPassword(passwordText);
+                user.setPhone(phoneText);
+                user.setPostalCode(Integer.parseInt(zipText));
+                user.setStreet(addressText);
+
+                sig.signUp(user);
+
+                initLogIn();
+
+            } catch (UserAlreadyExistsException ex) {
+                Optional<ButtonType> action = new Alert(Alert.AlertType.ERROR,
+                        "Username already exists").showAndWait();
+                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ServerCapacityException ex) {
+                Optional<ButtonType> action = new Alert(Alert.AlertType.ERROR,
+                        "Server is at full capacity at the moment, try again in a few seconds").showAndWait();
+                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ServerErrorException ex) {
+                Optional<ButtonType> action = new Alert(Alert.AlertType.ERROR,
+                       ex.getMessage()).showAndWait();
+                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    public void initLogIn() {
+        try {
+            FXMLLoader loader
+                    = new FXMLLoader(getClass().getClassLoader().getResource("ui/view/LoginView.fxml"));
+            Parent root = (Parent) loader.load();
+            //Obtain the Sign In window controller
+            LoginController controller
+                    = LoginController.class
+                            .cast(loader.getController());
+            controller.setStage(stage);
+            controller.initStage(root);
+        } catch (IOException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -528,6 +615,15 @@ public class RegistrationController extends GenericController {
         if (action.get() == ButtonType.OK) {
             stage.close();
         }
+    }
+
+    private void showErrorMessage(String message) {
+
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

@@ -99,10 +99,11 @@ public abstract class GenericController {
      * @throws PasswordTooShortException If the password is too short (less than
      *                                   8 characters), this exception is thrown.
      */
-    protected void isTooShort(String password) throws PasswordTooShortException {
+    protected boolean isTooShort(String password) throws PasswordTooShortException {
         if (password.length() < 8) {
             throw new PasswordTooShortException();
-        }
+        } 
+        return false;
     }
     protected boolean validateUsername(String username) throws IncorrectFormatException {
         Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",

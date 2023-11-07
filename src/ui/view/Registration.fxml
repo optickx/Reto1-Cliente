@@ -24,7 +24,6 @@
                   <Font name="Cambria Math" size="23.0" />
                </font>
             </Label>
-            <Label id="signUpTitleLabel" alignment="CENTER" layoutX="171.0" layoutY="391.0" prefHeight="30.0" prefWidth="71.0" text="Ubication" textFill="WHITE" />
             <Label id="usernameLabel" alignment="CENTER" layoutX="168.0" layoutY="72.0" prefHeight="30.0" prefWidth="71.0" text="Username" textFill="WHITE">
                <font>
                   <Font name="Cambria Math" size="12.0" />
@@ -53,15 +52,15 @@
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></TextField>
-            <TextField id="adressTextField" fx:id="addressTextField" alignment="CENTER" layoutX="135.0" layoutY="465.0" promptText="Address">
+            <TextField id="adressTextField" fx:id="addressTextField" alignment="CENTER" layoutX="133.0" layoutY="441.0" promptText="Address">
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></TextField>
-            <TextField id="postalCodeTextField" fx:id="zipTextField" alignment="CENTER" layoutX="174.0" layoutY="499.0" prefHeight="26.0" prefWidth="71.0" promptText="ZIP">
+            <TextField id="postalCodeTextField" fx:id="zipTextField" alignment="CENTER" layoutX="171.0" layoutY="482.0" prefHeight="26.0" prefWidth="71.0" promptText="ZIP">
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></TextField>
-            <TextField id="cityTextField" fx:id="cityTextField" alignment="CENTER" layoutX="128.0" layoutY="422.0" prefHeight="25.0" prefWidth="162.0" promptText="City">
+            <TextField id="cityTextField" fx:id="cityTextField" alignment="CENTER" layoutX="129.0" layoutY="390.0" prefHeight="25.0" prefWidth="162.0" promptText="City">
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></TextField>
@@ -69,7 +68,7 @@
             <font>
                <Font name="Cambria Math" size="12.0" />
             </font></TextField>
-            <Button id="showPasswordButton1" fx:id="showPasswordButton" layoutX="320.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
+            <Button id="showPasswordButton1" fx:id="showPasswordButton" layoutX="317.0" layoutY="210.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
                <font>
                   <Font name="Cambria Math" size="12.0" />
                </font>
@@ -103,7 +102,7 @@
                   <Font name="Cambria Math" size="13.0" />
                </font>
             </Label>
-            <Label id="passwordErrorLabel" fx:id="personalInfoErrorLabel" alignment="CENTER" layoutX="75.0" layoutY="373.0" prefHeight="18.0" prefWidth="270.0" textFill="#ff5e5e">
+            <Label id="passwordErrorLabel" fx:id="personalInfoErrorLabel" alignment="CENTER" layoutX="79.0" layoutY="543.0" prefHeight="18.0" prefWidth="270.0" textFill="#ff5e5e">
                <font>
                   <Font name="Cambria Math" size="13.0" />
                </font>
