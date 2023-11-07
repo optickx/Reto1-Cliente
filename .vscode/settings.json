@@ -1,0 +1,13 @@
+{
+    "java.dependency.packagePresentation": "hierarchical",
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\2dam\\Downloads\\Library.jar",
+        "c:\\Program Files\\NetBeans 8.2\\platform\\modules\\ext\\junit-4.12.jar",
+        "c:\\Users\\2dam\\Desktop\\TestFXLibrary\\hamcrest-junit-2.0.0.0.jar",
+        "c:\\Users\\2dam\\Desktop\\TestFXLibrary\\java-hamcrest-2.0.0.0.jar",
+        "c:\\Users\\2dam\\Desktop\\TestFXLibrary\\testfx-core-4.0.13-alpha.jar",
+        "c:\\Users\\2dam\\Desktop\\TestFXLibrary\\testfx-junit-4.0.13-alpha.jar"
+    ]
+}
