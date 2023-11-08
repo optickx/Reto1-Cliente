@@ -26,6 +26,7 @@ import static packets.RequestType.*;
  * communicating with the server
  */
 public class Client implements Signable {
+
     /**
      * The port where the server is listening at
      */
@@ -79,18 +80,12 @@ public class Client implements Signable {
 
             return unpackResponse(response);
         } catch (SocketTimeoutException e) {
-            Exception ex = new Exception("Server timed out");
-            ex = new ServerErrorException();
-            throw (ServerErrorException) ex;
+            throw new ServerErrorException("Server timed out");
         } catch (IOException | ClassNotFoundException e) {
-            Exception ex = new Exception("Error connecting to the server");
-            ex = new ServerErrorException();
-            throw (ServerErrorException) ex;
+            throw new ServerErrorException("Error connecting to the server");
         } catch (UserAlreadyExistsException e) {
             // this catch clause should never be entered, thus the message
-            Exception ex = new Exception("OOPS");
-            ex = new ServerErrorException();
-            throw (ServerErrorException) ex;
+            throw new ServerErrorException("Something went VERY wrong");
         }
     }
 
@@ -111,12 +106,12 @@ public class Client implements Signable {
 
             unpackResponse(response);
         } catch (SocketTimeoutException e) {
-            throw ((ServerErrorException) new Exception("Server timed out"));
+            throw new ServerErrorException("Server timed out");
         } catch (IOException | ClassNotFoundException e) {
-            throw ((ServerErrorException) new Exception("Error writing to the server"));
+            throw new ServerErrorException("Error writing to the server");
         } catch (NoSuchUserException | BadCredentialsException e) {
             // this catch clause should never be entered, thus the message
-            throw ((ServerErrorException) new Exception("OOPS"));
+            throw new ServerErrorException("Something went VERY wrong");
         }
     }
 
@@ -137,7 +132,7 @@ public class Client implements Signable {
             case OK_RESPONSE:
                 return res.getUser();
             default:
-                return res.getUser();
+                throw new ServerErrorException("Something went wrong");
         }
     }
 }
