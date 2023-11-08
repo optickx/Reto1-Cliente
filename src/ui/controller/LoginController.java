@@ -1,6 +1,7 @@
 package ui.controller;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -57,6 +59,7 @@ public class LoginController extends GenericController {
         //set the the default button
         confirmButton.setDefaultButton(true);
 
+        // Set properties
         // se establece el nombre de la ventana
         stage.setTitle("Ventana");
         // se establece la ventana como no redimensionable
@@ -68,6 +71,15 @@ public class LoginController extends GenericController {
 
         passwordTextField.setVisible(false);
 
+        confirmButton.setText("Confirm");
+        exitButton.setText("Exit");
+
+        passwordTextField.setVisible(false);
+
+        confirmButton.setDisable(false);
+        exitButton.setDisable(false);
+        showPasswordButton.setDisable(false);
+
         loginErrorLabel.setVisible(false);
         passwordErrorLabel.setVisible(false);
 
@@ -77,6 +89,7 @@ public class LoginController extends GenericController {
         exitButton.setOnAction(this::handleExitButton);
         confirmButton.setOnAction(this::handleConfirmButtonAction);
         signUpLink.setOnAction(this::handleHyperlinkPressed);
+
         stage.setOnCloseRequest(this::handleCloseRequest);
 
         // alineamos los elementos
@@ -129,7 +142,6 @@ public class LoginController extends GenericController {
     private void handleExitButton(ActionEvent event) {
         Logger.getLogger(App.class.getName()).info("Exit Button pressed");
         closeRequest();
-
     }
 
     private void handleShowPassword(ActionEvent event) {
@@ -147,14 +159,23 @@ public class LoginController extends GenericController {
         } else {
             passwordTextField.setText(passwordField.getText());
         }
+        if (passwordTextField.isVisible()) {
+            showPassword(true);
+        } else {
+            showPassword(false);
+        }
+    }
 
-        passwordField.setVisible(visible);
-        passwordTextField.setVisible(!visible);
+    public void closeRequest() {
+        Optional<ButtonType> action = new Alert(Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to exit the application?").showAndWait();
+        if (action.get() == ButtonType.OK) {
+            stage.close();
+        }
     }
 
     private void handleHyperlinkPressed(ActionEvent event) {
         try {
-            Logger.getLogger(App.class.getName()).info("Hyperlink pressed");
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/view/Registration.fxml"));
             Parent root = (Parent) loader.load();
             // Obtain the Sign In window controller
@@ -168,6 +189,10 @@ public class LoginController extends GenericController {
     }
 
     /**
+     *
+     * handles the pressing of the confirm button. is necessary. this method is
+     * executed whenever that happens.
+     *
      * handles the pressing of the confirm button. is necessary. this method is
      * executed whenever that happens.
      *
@@ -175,7 +200,8 @@ public class LoginController extends GenericController {
      */
     @FXML
     private void handleConfirmButtonAction(ActionEvent event) {
-        Logger.getLogger(App.class.getName()).info("Confirm Button pressed pressed");
+
+        Logger.getLogger(App.class.getName()).info("Confirm Button pressed");
         if (loginErrorLabel.isVisible() || passwordErrorLabel.isVisible() || loginTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
             new Alert(Alert.AlertType.INFORMATION, "Your login information has errors").showAndWait();
         } else {
@@ -211,14 +237,15 @@ public class LoginController extends GenericController {
             new Alert(Alert.AlertType.ERROR,
                     "Server is at full capacity at the moment, try again in a few seconds")
                     .showAndWait();
+            LOGGER.log(Level.SEVERE, e.getMessage());
         } catch (ServerErrorException e) {
             new Alert(Alert.AlertType.ERROR,
                     e.getMessage()).showAndWait();
-            LOGGER.info("Error");
+            LOGGER.log(Level.SEVERE, e.getMessage());
         } catch (IOException e) {
             new Alert(Alert.AlertType.ERROR,
                     "Error loading main window").showAndWait();
-            LOGGER.info("Unable to load new window");
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
 

@@ -86,6 +86,7 @@ public class Client implements Signable {
         } catch (UserAlreadyExistsException e) {
             // this catch clause should never be entered, thus the message
             throw new ServerErrorException("Something went VERY wrong");
+
         }
     }
 
@@ -98,7 +99,7 @@ public class Client implements Signable {
             in = new ObjectInputStream(socket.getInputStream());
 
             // The data is introduced into the request and sent to the server side
-            request = new Request(user, LOGIN_REQUEST);
+            request = new Request(user, SIGNUP_REQUEST);
             out.writeObject(request);
 
             // Receives the response from the server side
@@ -133,6 +134,7 @@ public class Client implements Signable {
                 return res.getUser();
             default:
                 throw new ServerErrorException("Something went wrong");
+
         }
     }
 }
