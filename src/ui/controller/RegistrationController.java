@@ -541,9 +541,11 @@ public class RegistrationController extends GenericController {
         String zipText = zipTextField.getText();
 
         if (emailText.isEmpty() || passwordPass.isEmpty() || confirmPasswordPass.isEmpty()
-                || passwordText.isEmpty() || confirmPasswordText.isEmpty() || nameText.isEmpty() || phoneText.isEmpty()
+                || nameText.isEmpty() || phoneText.isEmpty()
                 || cityText.isEmpty() || addressText.isEmpty() || zipText.isEmpty() || emailErrorLabel.isVisible()
                 || confirmPasswordErrorLabel.isVisible() || zipErrorLabel.isVisible() || personalInfoErrorLabel.isVisible()) {
+                            Optional<ButtonType> action = new Alert(Alert.AlertType.INFORMATION,
+                        "User registered correctly").showAndWait();
 
         } else {
             try {

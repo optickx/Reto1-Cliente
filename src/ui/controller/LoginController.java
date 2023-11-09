@@ -159,11 +159,8 @@ public class LoginController extends GenericController {
         } else {
             passwordTextField.setText(passwordField.getText());
         }
-        if (passwordTextField.isVisible()) {
-            showPassword(true);
-        } else {
-            showPassword(false);
-        }
+        passwordField.setVisible(visible);
+        passwordTextField.setVisible(!visible);
     }
 
     public void closeRequest() {
