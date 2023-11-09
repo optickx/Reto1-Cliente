@@ -22,7 +22,7 @@ public class RegisteredController extends GenericController {
     @FXML
     private Button logoutButton;
 
-    private User loggedUser;
+    protected static User loggedUser;
 
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
