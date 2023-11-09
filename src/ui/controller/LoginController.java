@@ -259,7 +259,7 @@ public class LoginController extends GenericController {
 
         Logger.getLogger(App.class.getName()).info("Confirm Button pressed");
         if (loginErrorLabel.isVisible() || passwordErrorLabel.isVisible() || loginTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
-            new Alert(Alert.AlertType.INFORMATION, "Your login information has errors").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Your login information has errors or is empty").showAndWait();
         } else {
             showMainWindow();
         }
