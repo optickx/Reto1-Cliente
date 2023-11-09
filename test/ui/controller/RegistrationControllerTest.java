@@ -1,94 +1,112 @@
 package ui.controller;
 
 import app.App;
-import java.io.IOException;
-import static java.rmi.Naming.lookup;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.Test;
-import ui.controller.RegistrationController;
 
-import javafx.stage.Stage;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
-import static org.testfx.api.FxAssert.verifyThat;
-import org.testfx.api.FxToolkit;
-import org.testfx.framework.junit.ApplicationTest;
-import static org.testfx.matcher.base.NodeMatchers.isDisabled;
-import static org.testfx.matcher.base.NodeMatchers.isEnabled;
-import static org.testfx.matcher.base.NodeMatchers.isInvisible;
-import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import static org.testfx.matcher.base.NodeMatchers.*;
-import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
-import ui.controller.LoginController;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import org.junit.Test;
 import javafx.stage.Stage;
-import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 
-import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
 /**
  *
- * @author 2dam
+ * @author Alex Irusta
  */
 public class RegistrationControllerTest extends ApplicationTest {
 
-    private TextField emailTextField;
-    
-    @BeforeClass
+    private Hyperlink signUpLink;
+    private TextField passwordTextField;
+    private TextField confirmPasswordTextField;
+    private TextField fullNameTextField;
+    private TextField phoneTextField;
+    private TextField cityTextField;
+    private TextField addressTextField;
+    private TextField zipTextField;
+    private Button showPasswordButton;
+    private Button signUpButton;
+
+    /**
+     * Method that calls the App's start() to open the Log In window and
+     * initialises its Hyperlink
+     *
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
-        
-        emailTextField = lookup("#emailTextField").query();
-        
+        new App().start(stage);
+
+        signUpLink = lookup("#signUpLink").query();
+
     }
 
+    /**
+     * This method tests all functionalities of the SignUp window, including
+     * cases where a field is left empty or incorrectly typed and the SignUp
+     * button is pressed.
+     */
     @Test
     public void test1_InitialState() {
-        clickOn(emailTextField);
-        //Clicks on hyperlink
-        //Checks textfields
-        // verifyThat("#emailErrorLabel", isInvisible());
-        // verifyThat("#confirmPasswordErrorLabel", isInvisible());
-        // verifyThat("#zipErrorLabel", isInvisible());
-        /* verifyThat("#personalInfoErrorLabel", isInvisible());
-        verifyThat("#emailTextField", hasText(""));
-        verifyThat("#passwordField", hasText(""));
-        verifyThat("#confirmPasswordField", hasText(""));
-        verifyThat("#passwordTextField", hasText(""));
-        verifyThat("#confirmPasswordTextField", hasText(""));
-        verifyThat("#fullNameTextField", hasText(""));
-        verifyThat("#addressTextField", hasText(""));
-        verifyThat("#zipTextField", hasText(""));
-        verifyThat("#cityTextField", hasText(""));
-        verifyThat("#phoneTextField", hasText(""));
-         */
-        //Check SignUp button and hyperlink
+        clickOn(signUpLink);
 
-        //Check if error labels are desabled
+        passwordTextField = lookup("#passwordTextField").query();
+        confirmPasswordTextField = lookup("#confirmPasswordTextField").query();
+        fullNameTextField = lookup("#fullNameTextField").query();
+        phoneTextField = lookup("#phoneTextField").query();
+        cityTextField = lookup("#cityTextField").query();
+        addressTextField = lookup("#addressTextField").query();
+        zipTextField = lookup("#zipTextField").query();
+        showPasswordButton = lookup("#showPasswordButton").query();
+        signUpButton = lookup("#signUpButton").query();
+
+        write("jfaoifjodinfmvad");
+        eraseText(17);
+        write("alexirustaprof@gmail.com");
+        clickOn(passwordTextField);
+        write("hola");
+        clickOn(confirmPasswordTextField);
+        write("hola");
+        clickOn(passwordTextField);
+        eraseText(5);
+        clickOn(confirmPasswordTextField);
+        eraseText(5);
+        clickOn(passwordTextField);
+        write("Cr7Ronaldo7");
+        clickOn(confirmPasswordTextField);
+        write("Cr7Ronaldo7");
+        clickOn(showPasswordButton);
+
+        clickOn(phoneTextField);
+        write("kfk4fkdl");
+        eraseText(9);
+        write("640782345");
+        eraseText(10);
+        write("+34640782345");
+        clickOn(cityTextField);
+        write("Lemoniz");
+        clickOn(addressTextField);
+        write("Barrio Urizar 54");
+        clickOn(signUpButton);
+        clickOn("Aceptar");
+
+        clickOn(fullNameTextField);
+        write("feilkdfkdfkf");
+        eraseText(14);
+        write("Alex Irusta Mintegui");
+        clickOn(showPasswordButton);
+        clickOn(zipTextField);
+        write("754948620");
+
+        clickOn(signUpButton);
+        clickOn("Aceptar");
+
+        clickOn(zipTextField);
+        eraseText(12);
+        clickOn(signUpButton);
+
     }
 
-    /* private void clickOn(String signUpButton) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-     */
 }

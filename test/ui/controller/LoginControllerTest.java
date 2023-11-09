@@ -2,6 +2,7 @@ package ui.controller;
 
 import app.App;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -28,6 +29,8 @@ public class LoginControllerTest extends ApplicationTest {
 
     private Label loginErrorLabel, passwordErrorLabel;
     
+    private Hyperlink signUpLink;
+    
     private final String EMPTY_TEXT = ""; // used to check empty values
 
    
@@ -43,6 +46,8 @@ public class LoginControllerTest extends ApplicationTest {
         confirmButton = lookup("#confirmButton").query();
         loginErrorLabel = lookup("#loginErrorLabel").query();
         passwordErrorLabel = lookup("#passwordErrorLabel").query();
+        
+        signUpLink = lookup("#signUpLink").query();
     }
     /**
      * test the "server error" works properly. only when server is shut down
@@ -64,6 +69,8 @@ public class LoginControllerTest extends ApplicationTest {
      */
     @Test
     public void test2_InitialState() {
+        
+        
         verifyThat(loginTextField, isFocused());
 
         assertEquals(EMPTY_TEXT, loginTextField.getText());
