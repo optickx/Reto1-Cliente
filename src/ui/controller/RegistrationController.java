@@ -350,7 +350,7 @@ public class RegistrationController extends GenericController {
      * input in a user's personal information.
      *
      * @param observable An observable value, which may be associated with the
-     * 
+     *
      */
     private void handlePhoneNumber(ObservableValue observable,
             String oldValue,
@@ -370,8 +370,10 @@ public class RegistrationController extends GenericController {
     }
 
     /**
-     * If the passwordField is visible, calls showPassword with boolean true, if not, sends false
-     * @param event 
+     * If the passwordField is visible, calls showPassword with boolean true, if
+     * not, sends false
+     *
+     * @param event
      */
     private void handleShowPassword(ActionEvent event) {
         if (passwordField.isVisible()) {
@@ -383,7 +385,8 @@ public class RegistrationController extends GenericController {
 
     /**
      * Method to display the password when pressing the showPasswordButton
-     * @param visible 
+     *
+     * @param visible
      */
     private void showPassword(boolean visible) {
         if (visible) {
@@ -556,8 +559,6 @@ public class RegistrationController extends GenericController {
                 || nameText.isEmpty() || phoneText.isEmpty()
                 || cityText.isEmpty() || addressText.isEmpty() || zipText.isEmpty() || emailErrorLabel.isVisible()
                 || confirmPasswordErrorLabel.isVisible() || zipErrorLabel.isVisible() || personalInfoErrorLabel.isVisible()) {
-                            Optional<ButtonType> action = new Alert(Alert.AlertType.INFORMATION,
-                        "User registered correctly").showAndWait();
 
             Optional<ButtonType> action = new Alert(Alert.AlertType.ERROR,
                     "Some fields have errors or are empty").showAndWait();
@@ -575,6 +576,9 @@ public class RegistrationController extends GenericController {
                 user.setStreet(addressText);
 
                 sig.signUp(user);
+
+                Optional<ButtonType> action = new Alert(Alert.AlertType.INFORMATION,
+                        "User registered correctly").showAndWait();
 
                 initLogIn();
 
