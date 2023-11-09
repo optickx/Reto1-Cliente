@@ -14,6 +14,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import packets.User;
 
+/**
+ * A controller class for managing the registered user view in a JavaFX
+ * application. It is responsible for handling the UI components for the main
+ * window
+ *
+ * @author Alex Epelde
+ * @author Dani
+ */
 public class RegisteredController extends GenericController {
 
     @FXML
@@ -29,8 +37,10 @@ public class RegisteredController extends GenericController {
     }
 
     /**
-     * Method that initialises the window on login, sets a title and greets the user.
-     * @param root 
+     * Method that initialises the window on login, sets a title and greets the
+     * user.
+     *
+     * @param root
      */
     public void initStage(Parent root) {
         // We display a window opening information message with LOGGER
@@ -52,18 +62,20 @@ public class RegisteredController extends GenericController {
     }
 
     /**
-     * Method to handle the event when the Log Out button is pressed. What it does is to open the LoginView window
-     * @param event 
+     * Method to handle the event when the Log Out button is pressed. What it
+     * does is to open the LoginView window
+     *
+     * @param event
      */
-    private void handleLogoutButton(ActionEvent event){
+    private void handleLogoutButton(ActionEvent event) {
         try {
-            FXMLLoader loader = 
-                new FXMLLoader(getClass().getClassLoader().getResource("ui/view/LoginView.fxml"));
+            FXMLLoader loader
+                    = new FXMLLoader(getClass().getClassLoader().getResource("ui/view/LoginView.fxml"));
             Parent root = (Parent) loader.load();
             //Obtain the Sign In window controller
-            LoginController controller = 
-                LoginController.class
-                    .cast(loader.getController());
+            LoginController controller
+                    = LoginController.class
+                            .cast(loader.getController());
             controller.setStage(stage);
             controller.initStage(root);
         } catch (IOException ex) {
