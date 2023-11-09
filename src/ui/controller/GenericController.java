@@ -109,7 +109,12 @@ public abstract class GenericController {
         }
         return false;
     }
-
+    /**
+     * method that analyses the username
+     * @param username username to be checked
+     * @return true if value is correct
+     * @throws IncorrectFormatException if value doesn't match condition.
+     */
     protected boolean validateUsername(String username) throws IncorrectFormatException {
         Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
                 Pattern.CASE_INSENSITIVE);

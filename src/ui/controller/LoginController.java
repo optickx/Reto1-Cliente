@@ -31,16 +31,35 @@ import javafx.scene.input.KeyEvent;
 import logic.business.SignableFactory;
 import packets.User;
 
+/**
+ * @author dani
+ * @author alex
+ */
 public class LoginController extends GenericController {
 
+    /**
+     * Label for displaying error messages for both login and password.
+     */
     @FXML
     private Label loginErrorLabel, passwordErrorLabel;
+    /**
+     * Text fields where user will input the login password.
+     */
     @FXML
     private TextField loginTextField, passwordTextField;
+    /**
+     * Buttons of the window: confirmation, exit and show password.
+     */
     @FXML
     private Button confirmButton, exitButton, showPasswordButton;
+    /**
+     * Password field (where text is hidden)
+     */
     @FXML
     private PasswordField passwordField;
+    /**
+     * Hyper link that opens the Registration window
+     */
     @FXML
     private Hyperlink signUpLink;
 
@@ -60,29 +79,28 @@ public class LoginController extends GenericController {
         confirmButton.setDefaultButton(true);
 
         // Set properties
-        // se establece el nombre de la ventana
-        stage.setTitle("Ventana");
-        // se establece la ventana como no redimensionable
+        // Window dimensions are set
         stage.setResizable(false);
-
-        stage.setTitle("Login Window");
         stage.setMaximized(false);
+        stage.setTitle("Login Window");
+        // Window name is set.
         stage.setResizable(false);
-
+    
+        // Elements and properties are set.
         passwordTextField.setVisible(false);
-
+        // Button texts
         confirmButton.setText("Confirm");
         exitButton.setText("Exit");
-
+        // Password text field (used if the user wants to see password) is hidden
         passwordTextField.setVisible(false);
-
+        // Buttons are set disabled
         confirmButton.setDisable(false);
         exitButton.setDisable(false);
         showPasswordButton.setDisable(false);
-
+        // Error labels are set hidden
         loginErrorLabel.setVisible(false);
         passwordErrorLabel.setVisible(false);
-
+        
         loginTextField.textProperty().addListener(this::handleUsername);
         passwordField.textProperty().addListener(this::handlePassword);
         showPasswordButton.setOnAction(this::handleShowPassword);
@@ -92,24 +110,31 @@ public class LoginController extends GenericController {
 
         stage.setOnCloseRequest(this::handleCloseRequest);
 
-        // alineamos los elementos
-        // cerrar ventana con Esc
-        stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> { // Adds an event handler that records every
+        
+        // This code allows closing the window with Esc key
+        stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> { 
+            // Adds an event handler that records every
             // time the escape key is pressed
-            if (KeyCode.ESCAPE == event.getCode()) {
+            if (KeyCode.ESCAPE == event.getCode()) 
                 closeRequest();
-            }
+            
         });
         stage.show();
+        // Logger update.
         LOGGER.info("Window opened.");
     }
-
+    /**
+     * case of changing the username field
+     * @param observable in this case, username
+     * @param oldValue previous username in field
+     * @param newValue new username in field.
+     */
     protected void handleUsername(ObservableValue observable,
-            String oldValue, String newValue) {
+        String oldValue, String newValue) {
         try {
             newValue = newValue.trim();
-            if (isNotEmpty(newValue) || !isTooLong(newValue)) {
-                validateUsername(newValue);
+            if (isNotEmpty(newValue) || !isTooLong(newValue)) { // correct format
+                validateUsername(newValue); // custom method to handle
                 loginErrorLabel.setVisible(false);
             }
         } catch (EmptyFieldException e) {
@@ -120,7 +145,12 @@ public class LoginController extends GenericController {
             loginErrorLabel.setVisible(true);
         }
     }
-
+    /**
+     * case of changing the password text field
+     * @param observable in this case, password
+     * @param oldValue previous password in password field
+     * @param newValue new password in field
+     */
     private void handlePassword(ObservableValue observable,
             String oldValue,
             String newValue) {
@@ -138,34 +168,45 @@ public class LoginController extends GenericController {
             passwordErrorLabel.setVisible(true);
         }
     }
-
+    /**
+     * case of pressing exit button.
+     * @param event 
+     */
     private void handleExitButton(ActionEvent event) {
         Logger.getLogger(App.class.getName()).info("Exit Button pressed");
         closeRequest();
     }
-
+    /**
+     * case of "show password" button being pressed
+     * @param event
+     */
     private void handleShowPassword(ActionEvent event) {
         Logger.getLogger(App.class.getName()).info("Show Password button pressed");
         if (passwordTextField.isVisible()) {
+            // handled in custom method
             showPassword(true);
         } else {
             showPassword(false);
         }
     }
-
+    /**
+     * method that shows the password (hide Password Field and show Text Field)
+     * @param visible
+     */
     private void showPassword(boolean visible) {
-        if (visible) {
+        if (visible) 
             passwordField.setText(passwordTextField.getText());
-        } else {
+        else 
             passwordTextField.setText(passwordField.getText());
-        }
-        if (passwordTextField.isVisible()) {
+        
+        if (passwordTextField.isVisible())
             showPassword(true);
-        } else {
+        else 
             showPassword(false);
-        }
     }
-
+    /**
+     * method that closes the window.
+     */
     public void closeRequest() {
         Optional<ButtonType> action = new Alert(Alert.AlertType.CONFIRMATION,
                 "Are you sure you want to exit the application?").showAndWait();
@@ -173,7 +214,10 @@ public class LoginController extends GenericController {
             stage.close();
         }
     }
-
+    /**
+     * handle the case of pressing the HyperLink
+     * @param event
+     */
     private void handleHyperlinkPressed(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/view/Registration.fxml"));
@@ -193,9 +237,6 @@ public class LoginController extends GenericController {
      * handles the pressing of the confirm button. is necessary. this method is
      * executed whenever that happens.
      *
-     * handles the pressing of the confirm button. is necessary. this method is
-     * executed whenever that happens.
-     *
      * @param event The action event object
      */
     @FXML
@@ -207,9 +248,10 @@ public class LoginController extends GenericController {
         } else {
             showMainWindow();
         }
-
     }
-
+    /**
+     * method that launches the main window. handles EVERY exception.
+     */
     private void showMainWindow() {
         try {
             User user = new User(loginTextField.getText(), passwordField.getText());
