@@ -34,6 +34,13 @@ import javafx.scene.input.KeyEvent;
 import logic.business.SignableFactory;
 import packets.User;
 
+/**
+ * A controller class for handling the user registration view in a JavaFX
+ * application. It is responsible for managing the user interface and
+ * interactions related to the registration process.
+ *
+ * @author Alex Irusta
+ */
 public class RegistrationController extends GenericController {
 
     /**

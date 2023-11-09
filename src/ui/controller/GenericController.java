@@ -17,25 +17,31 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.scene.control.ButtonType;
 
+/**
+ * An abstract base controller class for JavaFX applications. This class
+ * provides common functionality and properties that can be shared among various
+ * controller classes.
+ *
+ * @author Dani
+ * @author Alex Epelde
+ */
 public abstract class GenericController {
 
-    protected final int MAX_TEXT_LENGTH = 255;
-
+    /**
+     * Package logger
+     */
     protected static final Logger LOGGER = Logger.getLogger("package view.controller\":");
 
     /**
      * maximum text fields length.
      */
-    protected final int MAX_LENGTH = 25;
+    protected final int MAX_LENGTH = 255;
     /**
      * the business logic object containing all business methods.
      */
     protected Signable signable;
     /**
      * the Stage object associated to the Scene controlled by this controller.
-     * This is an utility method reference that provides quick access inside the
-     * controller to the Stage object in order to make its initialization. Note
-     * that this makes Application, Controller and Stage being tightly coupled.
      */
     protected Stage stage;
 
@@ -73,7 +79,7 @@ public abstract class GenericController {
     /**
      * Checks if the provided field is not empty.
      *
-     * @param field The field to be checked for emptiness.
+     * @param password The field to be checked for emptiness.
      * @throws EmptyFieldException If the field is empty, this exception is null
      *
      */
@@ -109,8 +115,10 @@ public abstract class GenericController {
         }
         return false;
     }
+
     /**
      * method that analyses the username
+     *
      * @param username username to be checked
      * @return true if value is correct
      * @throws IncorrectFormatException if value doesn't match condition.

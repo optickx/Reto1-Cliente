@@ -7,17 +7,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.RegisteredController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.RegisteredController">
     <children>
         <ImageView fitHeight="484.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../resources/img/night-sky-background.jpg" />
             </image>
         </ImageView>
-        <Label fx:id="greetingLabel" alignment="CENTER" layoutX="120.0" layoutY="170.0" prefHeight="60.0" prefWidth="360.0" textAlignment="CENTER" textFill="WHITE">
+        <Label fx:id="greetingLabel" alignment="CENTER" layoutX="22.0" layoutY="32.0" prefHeight="278.0" prefWidth="561.0" textAlignment="CENTER" textFill="WHITE">
             <font>
-                <Font name="Cambria Math" size="37.0" />
+                <Font name="Cambria" size="32.0" />
             </font>
         </Label>
         <Button fx:id="logoutButton" layoutX="254.0" layoutY="326.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="90.0" text="LOGOUT" textAlignment="CENTER">

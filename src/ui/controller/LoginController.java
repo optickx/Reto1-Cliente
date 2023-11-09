@@ -32,8 +32,12 @@ import logic.business.SignableFactory;
 import packets.User;
 
 /**
- * @author dani
- * @author alex
+ * A controller class for handling the login view in a JavaFX application. This
+ * class extends the GenericController and is responsible for managing the user
+ * interface and user interactions related to the login process.
+ *
+ * @author Dani
+ * @author Alex Epelde
  */
 public class LoginController extends GenericController {
 
@@ -250,7 +254,7 @@ public class LoginController extends GenericController {
     /**
      *
      * handles the pressing of the confirm button. is necessary. this method is
-     * executed whenever that happens. 
+     * executed whenever that happens.
      *
      * @param event The action event object.
      */
