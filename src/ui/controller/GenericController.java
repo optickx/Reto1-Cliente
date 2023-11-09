@@ -152,6 +152,9 @@ public abstract class GenericController {
         }
     }
 
+    /**
+     * Method to handle the close request
+     */
     protected void handleCloseRequest(WindowEvent event) {
         event.consume();
         if (event.getEventType().equals(WindowEvent.WINDOW_CLOSE_REQUEST)) {

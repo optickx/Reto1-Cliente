@@ -350,13 +350,7 @@ public class RegistrationController extends GenericController {
      * input in a user's personal information.
      *
      * @param observable An observable value, which may be associated with the
-     * null null null null null null null null null null null null null null
-     * null null null null null null null null null null null null null null
-     * null null null     <<<<<<< HEAD phone number field. @param oldValue The previous value of
-     * the phone number. @param newValue The new value of the phone number to be
-     * validated. ======= phone number field. @param oldValue The previous value
-     * of the phone number. @param newValue The new value of the phone number to
-     * be validated. >>>>>>> gh/loginTestsAndMore
+     * 
      */
     private void handlePhoneNumber(ObservableValue observable,
             String oldValue,
@@ -375,6 +369,10 @@ public class RegistrationController extends GenericController {
         }
     }
 
+    /**
+     * If the passwordField is visible, calls showPassword with boolean true, if not, sends false
+     * @param event 
+     */
     private void handleShowPassword(ActionEvent event) {
         if (passwordField.isVisible()) {
             showPassword(true);
@@ -383,6 +381,10 @@ public class RegistrationController extends GenericController {
         }
     }
 
+    /**
+     * Method to display the password when pressing the showPasswordButton
+     * @param visible 
+     */
     private void showPassword(boolean visible) {
         if (visible) {
             passwordTextField.setText(passwordField.getText());
@@ -527,6 +529,16 @@ public class RegistrationController extends GenericController {
         }
     }
 
+    /**
+     * Handles the action when the "Sign Up" button is clicked. this method
+     * checks that all the fields are correctly filled in and sends the User's
+     * data to the factory, and then calls initLogin(), which opens the Log In
+     * window.this method checks that all the fields are correctly filled in and
+     * sends the User's data to the factory, and then calls initLogin(), which
+     * opens the Log In window.
+     *
+     * @param event
+     */
     private void handleSignUpButtonAction(ActionEvent event) {
 
         String emailText = emailTextField.getText();
@@ -544,6 +556,9 @@ public class RegistrationController extends GenericController {
                 || passwordText.isEmpty() || confirmPasswordText.isEmpty() || nameText.isEmpty() || phoneText.isEmpty()
                 || cityText.isEmpty() || addressText.isEmpty() || zipText.isEmpty() || emailErrorLabel.isVisible()
                 || confirmPasswordErrorLabel.isVisible() || zipErrorLabel.isVisible() || personalInfoErrorLabel.isVisible()) {
+
+            Optional<ButtonType> action = new Alert(Alert.AlertType.ERROR,
+                    "Some fields have errors or are empty").showAndWait();
 
         } else {
             try {
@@ -584,6 +599,9 @@ public class RegistrationController extends GenericController {
 
     }
 
+    /**
+     * Method to initialise the LogInWindow
+     */
     public void initLogIn() {
         try {
             FXMLLoader loader

@@ -2,6 +2,7 @@ package ui.controller;
 
 import app.App;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -29,6 +30,8 @@ public class LoginControllerTest extends ApplicationTest {
 
     private Label loginErrorLabel, passwordErrorLabel;
     
+    private Hyperlink signUpLink;
+    
     private final String EMPTY_TEXT = ""; // used to check empty values
 
     // TODO: mark correctly the labels for the errors
@@ -42,6 +45,8 @@ public class LoginControllerTest extends ApplicationTest {
         signUpButton = lookup("#signUpButton").query();
         loginErrorLabel = lookup("#loginErrorLabel").query();
         passwordErrorLabel = lookup("#passwordErrorLabel").query();
+        
+        signUpLink = lookup("#signUpLink").query();
     }
 
     /**
@@ -66,6 +71,8 @@ public class LoginControllerTest extends ApplicationTest {
      */
     @Test
     public void test2_InitialState() {
+        
+        
         verifyThat(loginTextField, isFocused());
 
         assertEquals(EMPTY_TEXT, loginTextField.getText());

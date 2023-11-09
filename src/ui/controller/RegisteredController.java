@@ -28,6 +28,10 @@ public class RegisteredController extends GenericController {
         this.loggedUser = loggedUser;
     }
 
+    /**
+     * Method that initialises the window on login, sets a title and greets the user.
+     * @param root 
+     */
     public void initStage(Parent root) {
         // We display a window opening information message with LOGGER
         LOGGER.info("Initialazing " + " window.");
@@ -47,6 +51,10 @@ public class RegisteredController extends GenericController {
         logoutButton.setOnAction(this::handleLogoutButton);
     }
 
+    /**
+     * Method to handle the event when the Log Out button is pressed. What it does is to open the LoginView window
+     * @param event 
+     */
     private void handleLogoutButton(ActionEvent event){
         try {
             FXMLLoader loader = 
