@@ -1,18 +1,16 @@
-## Getting Started
+## Grupo 2
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Repositorio en GitHub de trabajo del Grupo 2, formado por Alex Irusta, Alexander Epelde y Daniel Barrios
 
-## Folder Structure
+## Estructura de carpetas
 
-The workspace contains two folders by default, where:
+El Repositorio contiene dos carpetas:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- `src`: contiene todo el codigo fuente
+- `lib`: contiene un "directorio espejo" para testar el codigo fuente 
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+Además, contiene un archivo gitignore para hacer mas eficiente el pusheo de archivos.
 
 ## Dependency Management
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Además de este repositorio, existe otro secundario que aloja el codigo fuente del servidor:  [here]([https://github.com/optickx/Reto1-Servidor]).
