@@ -10,105 +10,111 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.RegistrationController">
+<AnchorPane prefHeight="939.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.RegistrationController">
   <children>
-      <Pane prefHeight="618.0" prefWidth="411.0">
+      <Pane prefHeight="939.0" prefWidth="621.0">
          <children>
-            <ImageView fitHeight="413.0" fitWidth="660.0" layoutX="-101.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+            <ImageView fitHeight="625.0" fitWidth="945.0" layoutX="-159.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
                   <Image url="@../../resources/img/night-sky-background.jpg" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" layoutX="134.0" layoutY="31.0" prefHeight="34.0" prefWidth="149.0" text="Registration" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="203.0" layoutY="35.0" prefHeight="40.0" prefWidth="214.0" text="Registration" textFill="WHITE">
                <font>
-                  <Font name="Cambria Math" size="23.0" />
+                  <Font name="Cambria Bold" size="32.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="168.0" layoutY="72.0" prefHeight="30.0" prefWidth="71.0" text="Username" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="243.0" layoutY="116.0" prefHeight="30.0" prefWidth="149.0" text="Username" textFill="WHITE">
                <font>
-                  <Font name="Cambria Math" size="12.0" />
+                  <Font name="Cambria" size="24.0" />
                </font></Label>
-            <TextField fx:id="emailTextField" alignment="CENTER" layoutX="109.0" layoutY="102.0" prefHeight="25.0" prefWidth="193.0" promptText="Email">
+            <TextField fx:id="emailTextField" alignment="CENTER" layoutX="177.0" layoutY="160.0" prefHeight="45.0" prefWidth="289.0" promptText="example@example.com">
                <font>
-                  <Font name="Cambria Math" size="12.0" />
+                  <Font name="Cambria" size="20.0" />
                </font></TextField>
-            <Label alignment="CENTER" layoutX="135.0" layoutY="155.0" prefHeight="30.0" prefWidth="149.0" text="Input your password twice" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="173.0" layoutY="232.0" prefHeight="30.0" prefWidth="289.0" text="Input your password twice" textFill="WHITE">
             <font>
-               <Font name="Cambria Math" size="12.0" />
+               <Font name="Cambria" size="24.0" />
             </font></Label>
-            <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="112.0" layoutY="185.0" prefHeight="25.0" prefWidth="193.0" promptText="Password">
+            <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="177.0" layoutY="269.0" prefHeight="45.0" prefWidth="289.0" promptText="Password">
             <font>
-               <Font name="Cambria Math" size="12.0" />
+               <Font name="Cambria" size="20.0" />
             </font></PasswordField>
-            <PasswordField fx:id="confirmPasswordField" alignment="CENTER" layoutX="110.0" layoutY="222.0" prefHeight="25.0" prefWidth="193.0" promptText="Confirm Password">
+            <PasswordField fx:id="confirmPasswordField" alignment="CENTER" layoutX="177.0" layoutY="326.0" prefHeight="45.0" prefWidth="289.0" promptText="Confirm Password">
             <font>
-               <Font name="Cambria Math" size="12.0" />
+               <Font name="Cambria" size="20.0" />
             </font></PasswordField>
-            <Label alignment="CENTER" layoutX="144.0" layoutY="273.0" prefHeight="30.0" prefWidth="136.0" text="Personal information" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="181.0" layoutY="410.0" prefHeight="30.0" prefWidth="279.0" text="Personal information" textFill="WHITE">
                <font>
-                  <Font name="Cambria Math" size="12.0" />
+                  <Font name="Cambria" size="24.0" />
                </font></Label>
-            <TextField fx:id="fullNameTextField" alignment="CENTER" layoutX="107.0" layoutY="303.0" prefHeight="25.0" prefWidth="200.0" promptText="Full name">
+            <TextField fx:id="fullNameTextField" alignment="CENTER" layoutX="177.0" layoutY="453.0" prefHeight="45.0" prefWidth="289.0" promptText="Full name">
             <font>
-               <Font name="Cambria Math" size="12.0" />
+               <Font name="Cambria" size="20.0" />
             </font></TextField>
-            <TextField fx:id="addressTextField" alignment="CENTER" layoutX="133.0" layoutY="441.0" promptText="Address">
+            <TextField fx:id="addressTextField" alignment="CENTER" layoutX="177.0" layoutY="628.0" prefHeight="45.0" prefWidth="289.0" promptText="Address">
             <font>
-               <Font name="Cambria Math" size="12.0" />
+               <Font name="Cambria" size="20.0" />
             </font></TextField>
-            <TextField fx:id="zipTextField" alignment="CENTER" layoutX="171.0" layoutY="482.0" prefHeight="26.0" prefWidth="71.0" promptText="ZIP">
+            <TextField fx:id="zipTextField" alignment="CENTER" layoutX="259.0" layoutY="686.0" prefHeight="45.0" prefWidth="118.0" promptText="ZIP">
             <font>
-               <Font name="Cambria Math" size="12.0" />
+               <Font name="Cambria" size="20.0" />
             </font></TextField>
-            <TextField fx:id="cityTextField" alignment="CENTER" layoutX="129.0" layoutY="390.0" prefHeight="25.0" prefWidth="162.0" promptText="City">
+            <TextField fx:id="cityTextField" alignment="CENTER" layoutX="176.0" layoutY="570.0" prefHeight="45.0" prefWidth="289.0" promptText="City">
             <font>
-               <Font name="Cambria Math" size="12.0" />
+               <Font name="Cambria" size="20.0" />
             </font></TextField>
-            <TextField fx:id="phoneTextField" alignment="CENTER" layoutX="131.0" layoutY="345.0" prefHeight="25.0" prefWidth="162.0" promptText="Phone Number">
+            <TextField fx:id="phoneTextField" alignment="CENTER" layoutX="177.0" layoutY="511.0" prefHeight="45.0" prefWidth="289.0" promptText="Phone Number">
             <font>
-               <Font name="Cambria Math" size="12.0" />
+               <Font name="Cambria" size="20.0" />
             </font></TextField>
-            <Button fx:id="showPasswordButton" layoutX="317.0" layoutY="210.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
+            <Button fx:id="showPasswordButton" layoutX="483.0" layoutY="293.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="49.0">
                <font>
                   <Font name="Cambria Math" size="12.0" />
                </font>
                <graphic>
-                  <ImageView fitHeight="28.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="34.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/img/eye-see.png" />
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="goBackButton" layoutX="99.0" layoutY="565.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="Go Back">
+            <Button fx:id="goBackButton" layoutX="177.0" layoutY="835.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="97.0" text="Go Back">
                <font>
-                  <Font name="Cambria Math" size="12.0" />
+                  <Font name="Cambria" size="18.0" />
                </font></Button>
-            <Button fx:id="signUpButton" layoutX="268.0" layoutY="565.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="Sign Up">
+            <Button fx:id="signUpButton" layoutX="369.0" layoutY="835.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="97.0" text="Sign Up">
                <font>
-                  <Font name="Cambria Math" size="12.0" />
+                  <Font name="Cambria" size="18.0" />
                </font></Button>
-            <Label fx:id="emailErrorLabel" alignment="CENTER" layoutX="74.0" layoutY="127.0" prefHeight="18.0" prefWidth="270.0" textFill="#ff5e5e">
+            <Label fx:id="emailErrorLabel" alignment="CENTER" layoutX="90.0" layoutY="213.0" prefHeight="19.0" prefWidth="463.0" textFill="#ff5e5e">
                <font>
-                  <Font name="Cambria Math" size="13.0" />
+                  <Font name="Cambria" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="confirmPasswordErrorLabel" alignment="CENTER" layoutX="73.0" layoutY="247.0" prefHeight="18.0" prefWidth="270.0" textFill="#ff5e5e">
+            <Label fx:id="confirmPasswordErrorLabel" alignment="CENTER" layoutX="86.0" layoutY="384.0" prefHeight="19.0" prefWidth="463.0" textFill="#ff5e5e">
                <font>
-                  <Font name="Cambria Math" size="13.0" />
+                  <Font name="Cambria" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="zipErrorLabel" alignment="CENTER" layoutX="77.0" layoutY="525.0" prefHeight="18.0" prefWidth="270.0" textFill="#ff5e5e">
+            <Label fx:id="zipErrorLabel" alignment="CENTER" layoutX="90.0" layoutY="771.0" prefHeight="18.0" prefWidth="463.0" textFill="#ff5e5e">
                <font>
-                  <Font name="Cambria Math" size="13.0" />
+                  <Font name="Cambria" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="personalInfoErrorLabel" alignment="CENTER" layoutX="79.0" layoutY="543.0" prefHeight="18.0" prefWidth="270.0" textFill="#ff5e5e">
+            <Label fx:id="personalInfoErrorLabel" alignment="CENTER" layoutX="90.0" layoutY="741.0" prefHeight="18.0" prefWidth="463.0" textFill="#ff5e5e">
                <font>
-                  <Font name="Cambria Math" size="13.0" />
+                  <Font name="Cambria" size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="passwordTextField" alignment="CENTER" layoutX="112.0" layoutY="185.0" prefHeight="18.0" prefWidth="193.0" />
-            <TextField fx:id="confirmPasswordTextField" alignment="CENTER" layoutX="110.0" layoutY="222.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="18.0" prefWidth="193.0" />
+            <TextField fx:id="passwordTextField" alignment="CENTER" layoutX="177.0" layoutY="269.0" prefHeight="45.0" prefWidth="289.0" visible="false">
+               <font>
+                  <Font name="Cambria" size="20.0" />
+               </font></TextField>
+            <TextField fx:id="confirmPasswordTextField" alignment="CENTER" layoutX="177.0" layoutY="326.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="289.0" visible="false">
+               <font>
+                  <Font name="Cambria" size="20.0" />
+               </font></TextField>
          </children>
       </Pane>
   </children>
