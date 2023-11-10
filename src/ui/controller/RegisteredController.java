@@ -24,14 +24,33 @@ import packets.User;
  */
 public class RegisteredController extends GenericController {
 
+    /**
+     * Represents a JavaFX Label associated with a greeting message in the user
+     * interface.
+     */
     @FXML
     private Label greetingLabel;
 
+    /**
+     * Represents a JavaFX Button designed for user logout functionality.
+     */
     @FXML
     private Button logoutButton;
 
+    /**
+     * Represents a static instance of the User class, storing information about
+     * the currently logged-in user. This field is intended for internal use
+     * within the class or its subclasses.
+     */
     protected static User loggedUser;
 
+    /**
+     * Sets the currently logged-in user, updating the 'loggedUser' field with
+     * the provided User object.
+     *
+     * @param loggedUser The User object representing the user to be set as
+     * logged-in.
+     */
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
     }

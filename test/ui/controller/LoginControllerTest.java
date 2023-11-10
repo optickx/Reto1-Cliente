@@ -2,7 +2,6 @@ package ui.controller;
 
 import app.App;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -17,19 +16,16 @@ import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isFocused;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import static org.junit.Assert.assertEquals;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LoginControllerTest extends ApplicationTest {
     
-    private TextField loginTextField;
+    private TextField loginTextField, passwordTextField;
     private PasswordField passwordField;
-    private Button confirmButton;
+    private Button confirmButton, showPasswordButton;
 
     private Label loginErrorLabel, passwordErrorLabel;
-    
-    private Hyperlink signUpLink;
     
     private final String EMPTY_TEXT = ""; // used to check empty values
 
@@ -43,11 +39,11 @@ public class LoginControllerTest extends ApplicationTest {
         new App().start(stage);
         loginTextField = lookup("#loginTextField").query();
         passwordField = lookup("#passwordField").query();
+        passwordTextField = lookup("#passwordTextField").query();
         confirmButton = lookup("#confirmButton").query();
+        showPasswordButton = lookup("#showPasswordButton").query();
         loginErrorLabel = lookup("#loginErrorLabel").query();
         passwordErrorLabel = lookup("#passwordErrorLabel").query();
-        
-        signUpLink = lookup("#signUpLink").query();
     }
     /**
      * test the "server error" works properly. only when server is shut down
@@ -69,8 +65,6 @@ public class LoginControllerTest extends ApplicationTest {
      */
     @Test
     public void test2_InitialState() {
-        
-        
         verifyThat(loginTextField, isFocused());
 
         assertEquals(EMPTY_TEXT, loginTextField.getText());
@@ -83,13 +77,14 @@ public class LoginControllerTest extends ApplicationTest {
     public void test3_FormatErrors() {
         clickOn(loginTextField);
         write("abcdefghijklmnopqrstuvwxyz.org");
-        verifyThat(loginErrorLabel, isVisible());
+        assertTrue(loginErrorLabel.getText().equals("Username must be a valid email"));
         
         eraseText(50);
 
         clickOn(passwordField);
         write("abcd");
-        verifyThat(passwordErrorLabel, isVisible());
+        System.out.println(passwordErrorLabel.getText());
+        assertTrue(passwordErrorLabel.getText().equalsIgnoreCase("Password must be between 8 and 25 characters long"));
 
     }
     /**
@@ -102,21 +97,20 @@ public class LoginControllerTest extends ApplicationTest {
         clickOn(passwordField);
         write("whatTheHellBruh");
         clickOn(confirmButton);
-        //verifyThat(passwordErrorLabel, isVisible());
-        assertTrue(passwordErrorLabel.getText().equalsIgnoreCase("Password too short"));
+        assertTrue(passwordErrorLabel.getText().equalsIgnoreCase("Incorrect password"));
     }
     /**
      * tests the username and email formats
      */
     @Test
-    public void test5_LoginFormatError() {
+    public void test5_LoginNotExistError() {
         clickOn(loginTextField);
         write("beetlejuice@horror.com");
         clickOn(passwordField);
         write("abcd*1234");
         clickOn(confirmButton);
         //verifyThat(loginErrorLabel, isVisible());
-        assertTrue(loginErrorLabel.getText().equalsIgnoreCase("Username must be a valid email"));
+        assertTrue(loginErrorLabel.getText().equalsIgnoreCase("Username does not exist"));
 
         clickOn(loginTextField);
         eraseText(60);
@@ -124,5 +118,13 @@ public class LoginControllerTest extends ApplicationTest {
         clickOn(confirmButton);
         //verifyThat(loginErrorLabel, isVisible());
         assertTrue(loginErrorLabel.getText().equalsIgnoreCase("Username must be a valid email"));
+    }
+    @Test
+    public void test6_ShowPasswordButton() {
+        clickOn(passwordField);
+        write("4 c0mpl3t3ly n0rm4l p4ssw0rd");
+        String pwd = passwordField.getText();
+        clickOn(showPasswordButton);
+        assertTrue(passwordTextField.getText().equals(pwd));
     }
 }   

@@ -14,6 +14,8 @@ import exceptions.ServerErrorException;
 import exceptions.UserAlreadyExistsException;
 import interfaces.Signable;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import packets.Request;
 import packets.Response;
@@ -40,7 +42,7 @@ public class Client implements Signable {
     /**
      * Object with which we will communicate with the server
      */
-    private static Socket socket;
+    private Socket socket;
 
     /**
      * Packet sent to the server by the client
@@ -55,12 +57,12 @@ public class Client implements Signable {
     /**
      * Open channel to send objects to the server
      */
-    ObjectInputStream in;
+    private ObjectInputStream in;
 
     /**
      * Channel through where packets from the server will be received
      */
-    ObjectOutputStream out;
+    private ObjectOutputStream out;
 
     @Override
     public User signIn(User user)
@@ -86,6 +88,21 @@ public class Client implements Signable {
         } catch (UserAlreadyExistsException e) {
             // this catch clause should never be entered, thus the message
             throw new ServerErrorException("Something went VERY wrong");
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                if (out != null) {
+                    out.close();
+                }
+                if (socket != null) {
+                    socket.close();
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
     }
@@ -113,6 +130,22 @@ public class Client implements Signable {
         } catch (NoSuchUserException | BadCredentialsException e) {
             // this catch clause should never be entered, thus the message
             throw new ServerErrorException("Something went VERY wrong");
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                if (out != null) {
+                    out.close();
+                }
+                if (socket != null) {
+                    socket.close();
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }
 
