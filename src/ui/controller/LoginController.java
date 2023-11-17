@@ -108,6 +108,7 @@ public class LoginController extends GenericController {
 
         loginTextField.textProperty().addListener(this::handleUsername);
         passwordField.textProperty().addListener(this::handlePassword);
+        passwordTextField.textProperty().addListener(this::handlePassword);
         showPasswordButton.setOnAction(this::handleShowPassword);
         exitButton.setOnAction(this::handleExitButton);
         confirmButton.setOnAction(this::handleConfirmButtonAction);
@@ -165,6 +166,12 @@ public class LoginController extends GenericController {
             String newValue) {
         try {
             validatePassword(newValue);
+            if (passwordField.isVisible()) {
+            } else {
+                passwordField.setText(passwordTextField.getText());
+            }
+            passwordTextField.setText(passwordField.getText());
+
             passwordErrorLabel.setVisible(false);
         } catch (IncorrectFormatException e) {
             passwordErrorLabel.setText("Password too long");
@@ -209,11 +216,6 @@ public class LoginController extends GenericController {
      * @param visible
      */
     private void showPassword(boolean visible) {
-        if (visible) {
-            passwordField.setText(passwordTextField.getText());
-        } else {
-            passwordTextField.setText(passwordField.getText());
-        }
         passwordField.setVisible(visible);
         passwordTextField.setVisible(!visible);
     }
@@ -261,7 +263,7 @@ public class LoginController extends GenericController {
     @FXML
     private void handleConfirmButtonAction(ActionEvent event) {
 
-        Logger.getLogger(App.class.getName()).info("Confirm Button pressed");
+        Logger.getLogger(App.class.getName()).info("ConfirmButton has been pressed");
         if (loginErrorLabel.isVisible() || passwordErrorLabel.isVisible() || loginTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Your login information has errors or is empty").showAndWait();
         } else {

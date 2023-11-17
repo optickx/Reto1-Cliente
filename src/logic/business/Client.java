@@ -69,7 +69,7 @@ public class Client implements Signable {
             throws BadCredentialsException, NoSuchUserException, ServerCapacityException, ServerErrorException {
         try {
             socket = new Socket();
-            socket.connect(new InetSocketAddress(HOSTNAME, PORT), 1000);
+            socket.connect(new InetSocketAddress(HOSTNAME, PORT), 10000);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
@@ -154,6 +154,7 @@ public class Client implements Signable {
             UserAlreadyExistsException {
         switch (res.getResponse()) {
             case BAD_CREDENTIAL_ERROR:
+                Logger.getLogger(Client.class.getName()).log(Level.WARNING, "Incorrect password" );
                 throw new BadCredentialsException();
             case NO_SUCH_USER_ERROR:
                 throw new NoSuchUserException();
